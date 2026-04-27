@@ -6,23 +6,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#080808",
-        white: "#FFFFFF",
-        gold: "#D4A017",
-        teal: "#00C4B4"
+        background: "#0C0C0C",
+        surface: "#161412",
+        "accent-ember": "#E8572A",
+        "accent-lime": "#C8F04D",
+        "text-primary": "#F5F0E8",
+        "text-muted": "#8A8070",
+        border: "rgba(232, 87, 42, 0.2)"
       },
       fontFamily: {
-        heading: ["var(--font-playfair)", "Georgia", "serif"],
-        body: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"]
+        heading: ["var(--font-cormorant)", "serif"],
+        body: ["var(--font-dm)", "system-ui", "sans-serif"],
+        display: ["var(--font-space)", "system-ui", "sans-serif"]
       },
       keyframes: {
-        auroraShift: {
-          "0%, 100%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" }
+        aurora: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "100% 50%" }
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-12px)" }
+        },
+        grain: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "25%": { transform: "translate(-2%, 1%)" },
+          "50%": { transform: "translate(1%, -2%)" },
+          "75%": { transform: "translate(2%, 2%)" }
         }
       },
       animation: {
-        auroraShift: "auroraShift 18s ease-in-out infinite"
+        aurora: "aurora 8s infinite alternate",
+        float: "float 4s ease-in-out infinite",
+        grain: "grain 0.1s steps(2) infinite"
       }
     }
   },
