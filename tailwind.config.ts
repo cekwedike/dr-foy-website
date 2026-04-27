@@ -6,39 +6,49 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0C0C0C",
-        surface: "#161412",
-        "accent-ember": "#E8572A",
-        "accent-lime": "#C8F04D",
-        "text-primary": "#F5F0E8",
-        "text-muted": "#8A8070",
-        border: "rgba(232, 87, 42, 0.2)"
+        background: "#141A21",
+        surface: "#1B232C",
+        "surface-alt": "#242E38",
+        ink: "#F2E8DC",
+        muted: "#93A8B8",
+        teal: "#2DBFB1",
+        coral: "#D9654A",
+        border: "rgba(45, 191, 177, 0.22)",
+        clay: "#2A3542"
       },
       fontFamily: {
         heading: ["var(--font-cormorant)", "serif"],
         body: ["var(--font-dm)", "system-ui", "sans-serif"],
-        display: ["var(--font-space)", "system-ui", "sans-serif"]
+        display: ["var(--font-space)", "system-ui", "sans-serif"],
+        wordmark: ["var(--font-wordmark)", "cursive"]
+      },
+      boxShadow: {
+        neu: "-6px -6px 18px rgba(255,255,255,0.05), 10px 10px 26px rgba(0,0,0,0.55)",
+        "neu-in": "inset 8px 8px 18px rgba(0,0,0,0.52), inset -5px -5px 14px rgba(255,255,255,0.04)"
       },
       keyframes: {
-        aurora: {
+        ambientDrift: {
+          "0%": { backgroundPosition: "0% 40%, 100% 60%, 50% 50%" },
+          "100%": { backgroundPosition: "100% 60%, 0% 40%, 50% 50%" }
+        },
+        floatBlob: {
+          "0%, 100%": { transform: "translate(0,0) scale(1)" },
+          "50%": { transform: "translate(12px,-18px) scale(1.06)" }
+        },
+        pulseLine: {
+          "0%, 100%": { opacity: "0.35", transform: "scaleY(0.88)" },
+          "50%": { opacity: "1", transform: "scaleY(1)" }
+        },
+        shimmerSweep: {
           "0%": { backgroundPosition: "0% 50%" },
           "100%": { backgroundPosition: "100% 50%" }
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-12px)" }
-        },
-        grain: {
-          "0%, 100%": { transform: "translate(0, 0)" },
-          "25%": { transform: "translate(-2%, 1%)" },
-          "50%": { transform: "translate(1%, -2%)" },
-          "75%": { transform: "translate(2%, 2%)" }
         }
       },
       animation: {
-        aurora: "aurora 8s infinite alternate",
-        float: "float 4s ease-in-out infinite",
-        grain: "grain 0.1s steps(2) infinite"
+        ambient: "ambientDrift 14s ease-in-out infinite alternate",
+        "float-blob": "floatBlob 11s ease-in-out infinite",
+        "pulse-line": "pulseLine 2.2s ease-in-out infinite",
+        shimmer: "shimmerSweep 10s linear infinite"
       }
     }
   },
@@ -54,9 +64,9 @@ const config: Config = {
           position: "absolute",
           inset: "0",
           pointerEvents: "none",
-          opacity: "0.08",
+          opacity: "0.07",
           backgroundImage:
-            "url('data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\"%3E%3Cfilter id=\"n\" x=\"0\" y=\"0\" width=\"100%25\" height=\"100%25\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.9\" numOctaves=\"2\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"200\" height=\"200\" filter=\"url(%23n)\" opacity=\"1\"/%3E%3C/svg%3E')",
+            'url(\'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Cfilter id="n" x="0" y="0" width="100%25" height="100%25"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="200" height="200" filter="url(%23n)" opacity="1"/%3E%3C/svg%3E\')',
           backgroundRepeat: "repeat",
           backgroundSize: "180px 180px",
           mixBlendMode: "overlay"

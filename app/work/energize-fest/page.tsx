@@ -3,16 +3,24 @@ import WorkPageLayout from "@/components/WorkPageLayout";
 export default function EnergizeFestPage() {
   return (
     <WorkPageLayout
-      heroImage="/images/foy-1.webp"
+      heroImage="/images/foy-1.jpg"
       title="Energize Fest"
-      subtitle="Where the movement gathers."
+      subtitle="A family-first cultural festival built for joy and scale."
       body={
-        <p>
-          Energize Fest is Energize Central&apos;s flagship live event. Over 3,000 attendees showed
-          up for the most recent edition, making it arguably the largest family-centered Christmas
-          event in Lagos. Artists like Greatman Takit, Prinx Emmanuel, Tope Alabi, and comedian
-          Forever have graced the stage. It is more than a concert. It is a cultural moment.
-        </p>
+        <div className="space-y-5">
+          <p>
+            Energize Fest is the live expression of the Energize Central mission: create
+            faith-rooted experiences that are both culturally relevant and family-safe.
+          </p>
+          <p>
+            Coverage by The Sun reported over 3,000 attendees and positioned the event as a major
+            December family entertainment format in Lagos.
+          </p>
+          <p>
+            Beyond performance, the festival is designed as community architecture where music,
+            storytelling, and celebration reinforce shared values.
+          </p>
+        </div>
       }
     />
   );

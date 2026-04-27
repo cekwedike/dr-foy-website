@@ -1,31 +1,19 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Cormorant_Garamond, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk"
-});
-
-const cormorantGaramond = Cormorant_Garamond({
-  subsets: ["latin"],
-  style: ["italic"],
-  weight: ["600"],
-  variable: "--font-cormorant-garamond"
-});
+import BrandWordmark from "@/components/BrandWordmark";
 
 const PALETTE = {
-  background: "#0C0C0C",
-  surface: "#161412",
-  cream: "#F5F0E8",
-  orange: "#E8572A",
-  lime: "#C8F04D",
-  borderScrolled: "rgba(232, 87, 42, 0.15)",
-  borderTransparent: "rgba(232, 87, 42, 0)"
+  background: "#0E1318",
+  surface: "#1B232C",
+  ink: "#F2E8DC",
+  coral: "#D9654A",
+  teal: "#2DBFB1",
+  borderScrolled: "rgba(45, 191, 177, 0.22)",
+  borderTransparent: "rgba(45, 191, 177, 0)"
 } as const;
 
 const navLinks = [
@@ -78,7 +66,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className={`${spaceGrotesk.variable} ${cormorantGaramond.variable} fixed inset-x-0 top-0 z-50 border-b`}
+      className="fixed inset-x-0 top-0 z-50 border-b"
       initial={false}
       animate={{
         backgroundColor: scrolled ? PALETTE.background : "rgba(12, 12, 12, 0)",
@@ -89,15 +77,10 @@ export default function Navbar() {
       <div className="flex w-full items-center justify-between px-6 py-4 md:px-12 md:py-6">
         <Link
           href="/"
-          aria-label="Dr. Foy Home"
-          className="text-[20px] tracking-[0.15em]"
-          style={{
-            color: PALETTE.orange,
-            fontFamily: "var(--font-cormorant-garamond), 'Cormorant Garamond', serif",
-            fontStyle: "italic"
-          }}
+          aria-label="Dr Tochukwu MacFoy home"
+          className="max-w-[min(56vw,14rem)] sm:max-w-none"
         >
-          DR. FOY
+          <BrandWordmark className="block text-[clamp(0.78rem,2.5vw,1.2rem)] text-coral" />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -114,10 +97,10 @@ export default function Navbar() {
               type="button"
               aria-expanded={desktopWorkOpen}
               aria-label="Open work menu"
-              className="text-xs uppercase tracking-[0.2em]"
+              className="text-sm uppercase tracking-[0.18em]"
               style={{
-                color: PALETTE.cream,
-                fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+                color: PALETTE.ink,
+                fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
               }}
             >
               WORK ▾
@@ -130,10 +113,9 @@ export default function Navbar() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="absolute right-0 mt-5 w-72 border-l-2 px-5 py-4 shadow-2xl"
+                  className="clay-panel absolute right-0 mt-5 w-72 border-l-2 border-teal px-5 py-4"
                   style={{
-                    backgroundColor: PALETTE.surface,
-                    borderLeftColor: PALETTE.orange
+                    backgroundColor: PALETTE.surface
                   }}
                 >
                   <div className="flex flex-col gap-3">
@@ -141,16 +123,16 @@ export default function Navbar() {
                       <motion.div key={item.href} whileHover={{ x: 4 }} transition={{ duration: 0.18 }}>
                         <Link
                           href={item.href}
-                          className="text-sm transition-colors duration-200"
+                          className="text-base transition-colors duration-200"
                           style={{
-                            color: PALETTE.cream,
-                            fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+                            color: PALETTE.ink,
+                            fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
                           }}
                           onMouseEnter={(event) => {
-                            event.currentTarget.style.color = PALETTE.lime;
+                            event.currentTarget.style.color = PALETTE.teal;
                           }}
                           onMouseLeave={(event) => {
-                            event.currentTarget.style.color = PALETTE.cream;
+                            event.currentTarget.style.color = PALETTE.ink;
                           }}
                         >
                           {item.label}
@@ -167,22 +149,16 @@ export default function Navbar() {
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
 
-          <motion.div
-            whileHover={{ scale: 1.02, backgroundColor: PALETTE.orange, color: PALETTE.background }}
-            transition={{ duration: 0.2 }}
-            className="rounded-full"
-            style={{ color: PALETTE.orange }}
-          >
+          <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="neu-outline rounded-full">
             <Link
               href="/contact"
-              className="rounded-full border px-6 py-2 text-xs uppercase tracking-[0.2em] transition-colors duration-200"
+              className="rounded-full px-6 py-2.5 text-sm uppercase tracking-[0.16em] transition-colors duration-200 hover:text-teal"
               style={{
-                borderColor: PALETTE.orange,
-                color: "currentColor",
-                fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+                color: PALETTE.ink,
+                fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
               }}
             >
-              BOOK DR. FOY
+              Book Dr. Foy
             </Link>
           </motion.div>
         </div>
@@ -191,7 +167,7 @@ export default function Navbar() {
           type="button"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           className="md:hidden"
-          style={{ color: PALETTE.cream }}
+          style={{ color: PALETTE.ink }}
           onClick={() => setMobileMenuOpen(true)}
         >
           <RxHamburgerMenu size={26} />
@@ -214,7 +190,7 @@ export default function Navbar() {
                   type="button"
                   aria-label="Close mobile menu"
                   className="p-2"
-                  style={{ color: PALETTE.cream }}
+                  style={{ color: PALETTE.ink }}
                   onClick={closeMobileMenu}
                 >
                   <RxCross2 size={28} />
@@ -238,10 +214,10 @@ export default function Navbar() {
                 <motion.div variants={mobileItem}>
                   <button
                     type="button"
-                    className="flex w-full items-center justify-between text-left text-sm uppercase tracking-[0.2em]"
+                    className="flex w-full items-center justify-between text-left text-base uppercase tracking-[0.18em]"
                     style={{
-                      color: PALETTE.cream,
-                      fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+                      color: PALETTE.ink,
+                      fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
                     }}
                     onClick={() => setMobileWorkOpen((prev) => !prev)}
                     aria-expanded={mobileWorkOpen}
@@ -259,7 +235,7 @@ export default function Navbar() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.24, ease: "easeOut" }}
                         className="mt-3 border-l-2 pl-4"
-                        style={{ borderLeftColor: PALETTE.orange }}
+                        style={{ borderLeftColor: PALETTE.teal }}
                       >
                         <div className="flex flex-col gap-3">
                           {workLinks.map((item) => (
@@ -267,16 +243,16 @@ export default function Navbar() {
                               key={item.href}
                               href={item.href}
                               onClick={closeMobileMenu}
-                              className="text-sm transition-colors duration-200"
+                              className="text-base transition-colors duration-200"
                               style={{
-                                color: PALETTE.cream,
-                                fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+                                color: PALETTE.ink,
+                                fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
                               }}
                               onMouseEnter={(event) => {
-                                event.currentTarget.style.color = PALETTE.lime;
+                                event.currentTarget.style.color = PALETTE.teal;
                               }}
                               onMouseLeave={(event) => {
-                                event.currentTarget.style.color = PALETTE.cream;
+                                event.currentTarget.style.color = PALETTE.ink;
                               }}
                             >
                               {item.label}
@@ -296,23 +272,16 @@ export default function Navbar() {
                 </motion.div>
 
                 <motion.div variants={mobileItem} className="pt-4">
-                  <motion.div
-                    whileHover={{ backgroundColor: PALETTE.orange, color: PALETTE.background }}
-                    transition={{ duration: 0.2 }}
-                    className="inline-flex rounded-full"
-                    style={{ color: PALETTE.orange }}
-                  >
+                  <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="inline-flex neu-outline rounded-full">
                     <Link
                       href="/contact"
                       onClick={closeMobileMenu}
-                      className="inline-flex rounded-full border px-6 py-2 text-xs uppercase tracking-[0.2em]"
+                      className="inline-flex px-6 py-2.5 text-sm uppercase tracking-[0.16em] text-ink hover:text-teal"
                       style={{
-                        borderColor: PALETTE.orange,
-                        color: "currentColor",
-                        fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+                        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
                       }}
                     >
-                      BOOK DR. FOY
+                      Book Dr. Foy
                     </Link>
                   </motion.div>
                 </motion.div>
@@ -334,10 +303,10 @@ function DesktopLink({ href, label }: LinkProps) {
   return (
     <Link
       href={href}
-      className="text-xs uppercase tracking-[0.2em] transition-colors duration-200 hover:text-[#E8572A]"
+      className="text-sm uppercase tracking-[0.18em] transition-colors duration-200 hover:text-teal"
       style={{
-        color: PALETTE.cream,
-        fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+        color: PALETTE.ink,
+        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
       }}
     >
       {label}
@@ -350,10 +319,10 @@ function MobileLink({ href, label, onNavigate }: LinkProps & { onNavigate: () =>
     <Link
       href={href}
       onClick={onNavigate}
-      className="text-sm uppercase tracking-[0.2em] transition-colors duration-200 hover:text-[#E8572A]"
+      className="text-base uppercase tracking-[0.18em] transition-colors duration-200 hover:text-teal"
       style={{
-        color: PALETTE.cream,
-        fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif"
+        color: PALETTE.ink,
+        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
       }}
     >
       {label}

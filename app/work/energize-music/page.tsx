@@ -3,17 +3,25 @@ import WorkPageLayout from "@/components/WorkPageLayout";
 export default function EnergizeMusicPage() {
   return (
     <WorkPageLayout
-      heroImage="/images/foy-the-energetic.webp"
+      heroImage="/images/foy-the-energetic.jpg"
       title="Energize Music"
-      subtitle="The label of the future."
+      subtitle="A faith-rooted label engineered for global relevance."
       body={
-        <p>
-          Energize Music is a Lagos-based gospel and family music label under Energize Central.
-          With artists like TY Bello and Greatman Takit charting from Lagos to Sao Paulo, the
-          label secured a landmark distribution deal with The Orchard, a Sony Music subsidiary, in
-          2024. The label operates from Victoria Island and extends into TV, film, podcasts,
-          gaming, and social media. Excellence in music quality is non-negotiable here.
-        </p>
+        <div className="space-y-5">
+          <p>
+            Energize Music operates within the Energize Central ecosystem and positions itself as a
+            high-standard home for faith and family-centered music.
+          </p>
+          <p>
+            In 2024, multiple reports including Guardian coverage documented its strategic alliance
+            with The Orchard, a Sony Music subsidiary, expanding international distribution
+            capability.
+          </p>
+          <p>
+            The model combines artist development, production discipline, and multimedia ambition
+            across music, visuals, and format experimentation.
+          </p>
+        </div>
       }
     />
   );

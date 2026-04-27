@@ -2,67 +2,72 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { verifiedSources } from "@/app/data/siteContent";
+import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 const pressMentions = [
   {
-    publication: "Vanguard",
-    headline: "Dr. Foy on building faith-rooted infrastructure for African creators",
-    excerpt: "How Energize Central is combining media strategy, community, and distribution."
+    publication: "BusinessDay",
+    headline: "Nigeria stands at the frontier of global cultural influence",
+    excerpt:
+      "Interview feature covering Dr. Foy's view on infrastructure, financing, IP ownership, and scaling the creative economy."
   },
   {
-    publication: "Guardian Nigeria",
-    headline: "Inside the movement behind Energize Fest and its cultural impact",
-    excerpt: "A look at scale, creative direction, and what comes next for the ecosystem."
+    publication: "The Guardian Nigeria",
+    headline: "Energize Music enters strategic partnership with Orchard",
+    excerpt:
+      "Coverage of the Orchard (Sony Music subsidiary) alliance and Energize Music's distribution ambitions."
   },
   {
-    publication: "This Day Live",
-    headline: "From physician to culture architect: the Dr. Foy story",
-    excerpt: "Why healthcare discipline became the foundation for long-term media execution."
+    publication: "The Sun Nigeria",
+    headline: "Energize Central becomes face of family entertainment",
+    excerpt:
+      "Report citing over 3,000 attendees and positioning Energize Fest as a major family-centered December format."
   },
   {
     publication: "TurnTable Charts",
-    headline: "Energize Music extends its reach with global distribution alignment",
-    excerpt: "How label strategy and artist development are expanding gospel music exports."
-  },
-  {
-    publication: "BusinessDay",
-    headline: "Creative commerce and the business architecture of Same Energy Global",
-    excerpt: "A business lens on community-led growth across culture and entertainment."
-  },
-  {
-    publication: "Champion Newspapers",
-    headline: "Energize Central's rise and what it signals for African media",
-    excerpt: "Industry observers map the trajectory from local platforms to global influence."
+    headline: "Industry digest on Energize Music × Orchard",
+    excerpt:
+      "Additional industry summary of the strategic alliance and its implications for gospel/family music distribution."
   }
 ];
 
 export default function PressPage() {
   return (
-    <main className="bg-[#080808] pt-20">
+    <main className="bg-background pt-20">
       <section className="flex min-h-[40vh] items-center justify-center px-6 text-center">
-        <h1 className="font-heading text-5xl text-white md:text-7xl">Press Room</h1>
+        <h1 className="font-heading text-[clamp(2.8rem,7vw,6rem)] text-ink">Press Room</h1>
       </section>
 
-      <section className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-6 pb-20 md:grid-cols-2 md:px-10">
+      <motion.section
+        className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-6 pb-20 md:grid-cols-2 md:px-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={staggerContainer}
+      >
         {pressMentions.map((item, index) => (
           <motion.article
             key={item.publication}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
-            whileHover={{ y: -4, boxShadow: "0 18px 30px rgba(0, 0, 0, 0.3)" }}
-            className="border-l-2 border-l-gold bg-[#111111] p-6"
+            variants={fadeUpVariant}
+            transition={{ delay: index * 0.06 }}
+            whileHover={{ y: -3 }}
+            className="clay-band relative rounded-2xl border-l-[3px] border-teal p-6"
           >
-            <p className="font-body text-xs uppercase tracking-[0.2em] text-gold">{item.publication}</p>
-            <h2 className="mt-3 font-heading text-3xl text-white">{item.headline}</h2>
-            <p className="mt-3 font-body text-sm leading-relaxed text-white/70">{item.excerpt}</p>
-            <Link href="#" className="mt-5 inline-flex font-body text-sm text-gold">
-              Read More →
+            <p className="font-body text-sm uppercase tracking-[0.18em] text-teal">{item.publication}</p>
+            <h2 className="mt-3 font-heading text-3xl text-ink">{item.headline}</h2>
+            <p className="mt-3 font-body text-base leading-relaxed text-ink/78">{item.excerpt}</p>
+            <Link
+              href={verifiedSources[index]?.href ?? "#"}
+              target={verifiedSources[index]?.href ? "_blank" : undefined}
+              rel={verifiedSources[index]?.href ? "noreferrer" : undefined}
+              className="mt-5 inline-flex font-body text-base text-coral transition-colors hover:text-teal"
+            >
+              Open Source →
             </Link>
           </motion.article>
         ))}
-      </section>
+      </motion.section>
     </main>
   );
 }
