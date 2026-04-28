@@ -2,12 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 export default function MovementSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const isContentInView = useInView(contentRef, {
+    once: true,
+    amount: 0.08,
+    margin: "28% 0px"
+  });
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
@@ -15,10 +24,13 @@ export default function MovementSection() {
   const imageY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1, 1.04]);
 
+  const animateState =
+    prefersReducedMotion ? "visible" : isContentInView ? "visible" : "hidden";
+
   return (
     <section ref={sectionRef} className="relative h-[82vh] min-h-[560px] overflow-hidden">
       <motion.div className="absolute inset-0" style={{ y: imageY, scale: imageScale }}>
-        <Image src="/images/foy.jpg" alt="" fill className="object-cover object-top" />
+        <Image src="/images/foy.jpg" alt="" fill className="object-cover object-top" sizes="100vw" />
       </motion.div>
 
       <div className="absolute inset-0 bg-[linear-gradient(rgba(14,19,24,0.82),rgba(14,19,24,0.78))]" />
@@ -30,10 +42,10 @@ export default function MovementSection() {
       />
 
       <motion.div
+        ref={contentRef}
         className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.35 }}
+        initial={prefersReducedMotion ? "visible" : "hidden"}
+        animate={animateState}
         variants={staggerContainer}
       >
         <motion.h2

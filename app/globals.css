@@ -156,19 +156,9 @@ body::after {
   animation: shimmerSweep 10s linear infinite;
 }
 
+/* Scroll snap disabled: combined with Lenis it caused blank viewport bands on long pages. */
 .home-snap-wrapper {
   scroll-snap-type: none;
-}
-
-@media (min-width: 768px) {
-  .home-snap-wrapper {
-    scroll-snap-type: y proximity;
-  }
-
-  .home-snap-wrapper > section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-  }
 }
 
 @keyframes ambientDrift {
@@ -227,7 +217,4 @@ body::after {
     scroll-behavior: auto !important;
   }
 
-  .home-snap-wrapper {
-    scroll-snap-type: none !important;
-  }
 }

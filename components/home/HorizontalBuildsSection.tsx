@@ -1,48 +1,50 @@
 "use client";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
-import { useReducedMotion } from "framer-motion";
-import { useLayoutEffect, useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useLayoutEffect, useRef, useState } from "react";
 import { workItems } from "@/app/data/siteContent";
 
 const items = workItems.slice(0, 3);
 
-/** Pinned horizontal gallery driven by vertical scroll (GSAP). Reduced-motion: stacked clay strips. */
+/**
+ * Vertical scroll drives horizontal translation via sticky + useScroll (no GSAP pin).
+ * GSAP ScrollTrigger `pin` + Lenis smooth-scroll commonly produces blank viewport gaps.
+ */
 export default function HorizontalBuildsSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [scrollDistance, setScrollDistance] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  useLayoutEffect(() => {
-    if (prefersReducedMotion || !sectionRef.current || !trackRef.current) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-    const section = sectionRef.current;
+  const measure = () => {
     const track = trackRef.current;
+    if (!track) return;
+    const overflow = Math.max(track.scrollWidth - window.innerWidth, 0);
+    setScrollDistance(overflow);
+  };
 
-    const tween = gsap.to(track, {
-      x: () => -(Math.max(track.scrollWidth - window.innerWidth, 0)),
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        pin: true,
-        scrub: 1,
-        start: "top top",
-        end: () => `+=${Math.max(track.scrollWidth - window.innerWidth + window.innerHeight * 0.35, 400)}`,
-        invalidateOnRefresh: true
-      }
-    });
-
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-
+  useLayoutEffect(() => {
+    measure();
+    const track = trackRef.current;
+    if (!track) return;
+    const ro = new ResizeObserver(() => measure());
+    ro.observe(track);
+    window.addEventListener("resize", measure);
     return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
     };
   }, [prefersReducedMotion]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const dist = scrollDistance ?? 0;
+  const x = useTransform(scrollYProgress, (progress) => -progress * dist);
 
   if (prefersReducedMotion) {
     return (
@@ -76,47 +78,57 @@ export default function HorizontalBuildsSection() {
     );
   }
 
+  const outerHeight =
+    scrollDistance !== null ? `calc(100vh + ${Math.max(scrollDistance, 0)}px)` : "min(240vh, 3200px)";
+
   return (
-    <section ref={sectionRef} className="relative h-screen min-h-[560px] w-full overflow-hidden bg-[var(--color-bg-deep)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-[linear-gradient(to_bottom,var(--color-bg-deep),transparent)]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-24 bg-[linear-gradient(to_top,var(--color-bg-deep),transparent)]" />
+    <div ref={containerRef} className="relative w-full" style={{ height: outerHeight }}>
+      <section className="sticky top-0 flex h-screen min-h-[560px] w-full overflow-hidden bg-[var(--color-bg-deep)]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-[linear-gradient(to_bottom,var(--color-bg-deep),transparent)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-24 bg-[linear-gradient(to_top,var(--color-bg-deep),transparent)]" />
 
-      <div className="absolute left-6 top-1/2 z-20 hidden -translate-y-1/2 md:left-12 lg:block">
-        <p className="font-display text-xs uppercase tracking-[0.38em] text-teal [writing-mode:vertical-rl] [text-orientation:mixed]">
-          What he builds — scroll
-        </p>
-      </div>
+        <div className="absolute left-6 top-1/2 z-20 hidden -translate-y-1/2 md:left-12 lg:block">
+          <p className="font-display text-xs uppercase tracking-[0.38em] text-teal [writing-mode:vertical-rl] [text-orientation:mixed]">
+            What he builds — scroll
+          </p>
+        </div>
 
-      <div ref={trackRef} className="flex h-full w-max items-stretch will-change-transform">
-        {items.map((item, index) => (
-          <article
-            key={item.slug}
-            className="relative flex h-full w-[92vw] shrink-0 items-stretch md:w-[72vw] lg:w-[62vw]"
-          >
-            <div className="clay-band relative m-4 flex-1 overflow-hidden rounded-[2rem] md:m-8 md:rounded-[2.25rem]">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 92vw, 62vw"
-                priority={index === 0}
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,19,24,0.94)_0%,rgba(14,19,24,0.12)_55%,transparent_100%)]" />
-              <div className="absolute bottom-0 left-0 z-10 max-w-[92%] p-8 md:p-12">
-                <h3 className="font-heading text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[0.9] text-ink">{item.title}</h3>
-                <p className="mt-4 max-w-xl font-body text-base text-ink/88 md:text-xl">{item.subtitle}</p>
-                <Link
-                  href={`/work/${item.slug}`}
-                  className="neu-outline mt-8 inline-flex px-8 py-3 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal"
-                >
-                  Explore →
-                </Link>
+        <motion.div
+          ref={trackRef}
+          style={{ x }}
+          className="flex h-full w-max items-stretch will-change-transform"
+        >
+          {items.map((item, index) => (
+            <article
+              key={item.slug}
+              className="relative flex h-full w-[92vw] shrink-0 items-stretch md:w-[72vw] lg:w-[62vw]"
+            >
+              <div className="clay-band relative m-4 flex-1 overflow-hidden rounded-[2rem] md:m-8 md:rounded-[2.25rem]">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 92vw, 62vw"
+                  priority={index === 0}
+                  onLoad={measure}
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,19,24,0.94)_0%,rgba(14,19,24,0.12)_55%,transparent_100%)]" />
+                <div className="absolute bottom-0 left-0 z-10 max-w-[92%] p-8 md:p-12">
+                  <h3 className="font-heading text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[0.9] text-ink">{item.title}</h3>
+                  <p className="mt-4 max-w-xl font-body text-base text-ink/88 md:text-xl">{item.subtitle}</p>
+                  <Link
+                    href={`/work/${item.slug}`}
+                    className="neu-outline mt-8 inline-flex px-8 py-3 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal"
+                  >
+                    Explore →
+                  </Link>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
+            </article>
+          ))}
+        </motion.div>
+      </section>
+    </div>
   );
 }

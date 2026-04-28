@@ -16,10 +16,10 @@ export default function AboutTeaserSection() {
   const imageY = useTransform(scrollYProgress, [0, 1], [0, -36]);
 
   return (
-    <section ref={sectionRef} className="bg-background">
+    <section ref={sectionRef} className="relative bg-background">
       <div className="grid min-h-[auto] grid-cols-1 md:min-h-[88vh] md:grid-cols-2">
         <motion.div className="relative min-h-[52vh] md:min-h-[88vh]" style={{ y: imageY }}>
-          <Image src="/images/foy-the-great.png" alt="" fill className="object-cover object-top" />
+          <Image src="/images/foy-the-great.png" alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
           <div className="absolute inset-0 bg-[linear-gradient(155deg,rgba(45,191,177,0.18),transparent_55%)] mix-blend-overlay" />
           <motion.div
             className="pointer-events-none absolute right-8 top-12 h-24 w-24 rounded-full bg-teal/25 blur-2xl"

@@ -26,7 +26,7 @@ export default function SpeakingPage() {
           </div>
           <Link
             href="/contact"
-            className="neu-outline mt-10 inline-flex px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:text-teal"
+            className="mt-10 inline-flex border-b border-teal/45 pb-1.5 font-body text-sm font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:text-teal"
           >
             Book Dr. Foy for Your Event
           </Link>

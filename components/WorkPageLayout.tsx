@@ -23,12 +23,19 @@ export default function WorkPageLayout({
 }: WorkPageLayoutProps) {
   return (
     <main className="bg-background pt-20">
-      <section className="relative flex h-[64vh] min-h-[440px] w-full items-center justify-center overflow-hidden">
-        <Image src={heroImage} alt="" fill priority className="object-cover object-top" />
+      <section className="relative flex h-[44vh] min-h-[280px] w-full items-center justify-center overflow-hidden md:h-[64vh] md:min-h-[440px]">
+        <Image
+          src={heroImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-top md:object-[center_30%]"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.38),rgba(14,19,24,0.9))]" />
         <Link
           href="/"
-          className="neu-outline absolute left-5 top-6 z-20 rounded-full px-4 py-2 font-body text-sm font-medium text-ink md:left-10 md:top-8"
+          className="neu-outline absolute left-4 top-4 z-20 rounded-full px-3.5 py-1.5 font-body text-xs font-medium text-ink md:left-10 md:top-8 md:px-4 md:py-2 md:text-sm"
           style={{ color: accentColor }}
         >
           ← Back Home
@@ -48,9 +55,13 @@ export default function WorkPageLayout({
         </motion.div>
       </section>
 
-      <section className="bg-surface px-5 py-14 md:px-10 md:py-20">
-        <div className="clay-band mx-auto max-w-5xl rounded-[28px] px-6 py-10 text-center font-body text-lg leading-[1.85] text-ink/86 sm:text-xl md:px-12 md:py-14 md:text-2xl">
-          {body}
+      <section className="bg-surface px-5 py-10 md:px-10 md:py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="h-px w-full bg-teal/30" />
+          <article className="py-8 text-left font-body text-base leading-[1.72] text-ink/86 sm:text-xl md:py-12 md:text-2xl md:leading-[1.85]">
+            {body}
+          </article>
+          <div className="h-px w-full bg-teal/30" />
         </div>
       </section>
     </main>

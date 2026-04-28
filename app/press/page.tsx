@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { verifiedSources } from "@/app/data/siteContent";
-import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 const pressMentions = [
   {
@@ -35,39 +33,42 @@ const pressMentions = [
 export default function PressPage() {
   return (
     <main className="bg-background pt-20">
-      <section className="flex min-h-[40vh] items-center justify-center px-6 text-center">
+      <section className="flex min-h-[26vh] items-center justify-center px-6 text-center md:min-h-[40vh]">
         <h1 className="font-heading text-[clamp(2.8rem,7vw,6rem)] text-ink">Press Room</h1>
       </section>
 
-      <motion.section
-        className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-6 pb-20 md:grid-cols-2 md:px-10"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={staggerContainer}
-      >
+      <section className="mx-auto max-w-7xl px-6 pb-12 md:px-10 md:pb-20">
+        <p className="max-w-3xl font-body text-base leading-relaxed text-ink/78 md:text-lg">
+          Selected coverage and interviews documenting the evolution of Dr. Foy&apos;s work across
+          media, culture, and creative infrastructure.
+        </p>
+        <div className="mt-7 h-px w-full bg-teal/25 md:mt-10" />
+
+        <div className="divide-y divide-teal/20">
         {pressMentions.map((item, index) => (
-          <motion.article
+          <article
             key={item.publication}
-            variants={fadeUpVariant}
-            transition={{ delay: index * 0.06 }}
-            whileHover={{ y: -3 }}
-            className="clay-band relative rounded-2xl border-l-[3px] border-teal p-6"
+            className="grid grid-cols-1 gap-3 py-6 md:grid-cols-[220px_1fr] md:gap-8 md:py-8"
           >
             <p className="font-body text-sm uppercase tracking-[0.18em] text-teal">{item.publication}</p>
-            <h2 className="mt-3 font-heading text-3xl text-ink">{item.headline}</h2>
-            <p className="mt-3 font-body text-base leading-relaxed text-ink/78">{item.excerpt}</p>
-            <Link
-              href={verifiedSources[index]?.href ?? "#"}
-              target={verifiedSources[index]?.href ? "_blank" : undefined}
-              rel={verifiedSources[index]?.href ? "noreferrer" : undefined}
-              className="mt-5 inline-flex font-body text-base text-coral transition-colors hover:text-teal"
-            >
-              Open Source →
-            </Link>
-          </motion.article>
+            <div>
+              <h2 className="font-heading text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.08] text-ink">
+                {item.headline}
+              </h2>
+              <p className="mt-2 font-body text-base leading-relaxed text-ink/78">{item.excerpt}</p>
+              <Link
+                href={verifiedSources[index]?.href ?? "#"}
+                target={verifiedSources[index]?.href ? "_blank" : undefined}
+                rel={verifiedSources[index]?.href ? "noreferrer" : undefined}
+                className="mt-4 inline-flex font-body text-sm uppercase tracking-[0.12em] text-coral transition-colors hover:text-teal"
+              >
+                View Source
+              </Link>
+            </div>
+          </article>
         ))}
-      </motion.section>
+        </div>
+      </section>
     </main>
   );
 }

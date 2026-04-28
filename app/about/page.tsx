@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { aboutHighlights, aboutNarrative, timeline } from "@/app/data/siteContent";
+import { aboutNarrative } from "@/app/data/siteContent";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 const advisoryCards = [
@@ -15,8 +15,15 @@ const advisoryCards = [
 export default function AboutPage() {
   return (
     <main className="bg-background pt-20">
-      <section className="relative flex h-[56vh] min-h-[420px] items-center justify-center overflow-hidden">
-        <Image src="/images/foy-the-great.png" alt="" fill priority className="object-cover object-top" />
+      <section className="relative flex h-[42vh] min-h-[280px] items-center justify-center overflow-hidden md:h-[56vh] md:min-h-[420px]">
+        <Image
+          src="/images/foy-the-great.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-top md:object-[center_30%]"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.22),rgba(14,19,24,0.9))]" />
         <h1 className="relative z-10 px-6 text-center font-heading text-[clamp(2.8rem,8vw,6.5rem)] text-ink">
           About Dr. Foy
@@ -24,14 +31,14 @@ export default function AboutPage() {
       </section>
 
       <motion.section
-        className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-16 md:grid-cols-2 md:px-10"
+        className="mx-auto grid max-w-7xl grid-cols-1 gap-7 px-5 py-10 md:grid-cols-2 md:gap-10 md:px-10 md:py-16"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={staggerContainer}
       >
-        <motion.div variants={fadeUpVariant} className="relative h-[580px] w-full overflow-hidden rounded-[30px]">
-          <Image src="/images/dr-foy-1.png" alt="" fill className="object-cover object-top" />
+        <motion.div variants={fadeUpVariant} className="relative h-[360px] w-full overflow-hidden rounded-[24px] md:h-[580px] md:rounded-[30px]">
+          <Image src="/images/dr-foy-1.png" alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
           <div className="absolute inset-0 bg-[linear-gradient(160deg,rgba(45,191,177,0.15),transparent_58%)]" />
         </motion.div>
         <motion.div variants={fadeUpVariant}>
@@ -40,7 +47,7 @@ export default function AboutPage() {
             Still a doctor.
             <span className="accent-gradient-text"> Now building culture infrastructure.</span>
           </h2>
-          <div className="mt-6 space-y-5 text-lg leading-[1.85] text-ink/80">
+          <div className="mt-5 space-y-4 text-base leading-[1.72] text-ink/80 md:mt-6 md:space-y-5 md:text-lg md:leading-[1.85]">
             {aboutNarrative.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
@@ -48,61 +55,17 @@ export default function AboutPage() {
         </motion.div>
       </motion.section>
 
-      <section className="mx-auto max-w-7xl px-5 py-10 md:px-10 md:py-14">
-        <h2 className="text-center font-heading text-[clamp(2.2rem,5vw,4rem)] text-ink">Verified Trajectory</h2>
-        <div className="relative mt-12">
-          <div className="absolute left-4 top-0 h-full w-px bg-teal/50 md:left-1/2 md:-translate-x-1/2" />
-          <div className="space-y-10">
-            {timeline.map((entry, index) => {
-              const rightAligned = index % 2 === 1;
-              return (
-                <motion.div
-                  key={entry.title}
-                  initial={{ opacity: 0, x: rightAligned ? 45 : -45 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className={`relative pl-12 md:w-1/2 md:pl-0 ${rightAligned ? "md:ml-auto md:pr-12" : "md:pl-12"}`}
-                >
-                  <span className="absolute left-4 top-6 h-3 w-3 -translate-x-1/2 rounded-full bg-gradient-to-br from-teal to-coral md:left-auto md:top-8 md:h-4 md:w-4 md:translate-x-0 md:translate-y-0" />
-                  <div className="clay-panel p-6">
-                    <p className="font-body text-sm uppercase tracking-[0.18em] text-coral">{entry.year}</p>
-                    <p className="mt-2 font-heading text-2xl text-ink">{entry.title}</p>
-                    <p className="mt-3 font-body text-base leading-relaxed text-ink/78">{entry.detail}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-surface px-5 py-16 md:px-10">
+      <section className="bg-surface px-5 py-10 md:px-10 md:py-16">
         <div className="mx-auto max-w-7xl">
           <h2 className="text-center font-heading text-[clamp(2.1rem,4.5vw,3.85rem)] text-ink">
             Boards & Advisory
           </h2>
-          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-4">
+          <div className="mt-7 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-4 md:gap-5">
             {advisoryCards.map(([org, role]) => (
-              <div key={org} className="clay-panel p-6">
+              <div key={org} className="clay-panel p-5 md:p-6">
                 <p className="font-heading text-2xl text-ink">{org}</p>
                 <p className="mt-3 font-body text-base uppercase tracking-[0.06em] text-teal">{role}</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-5 py-14 md:px-10">
-        <div className="mx-auto max-w-7xl">
-          <h3 className="font-body text-sm uppercase tracking-[0.22em] text-coral">Reference Highlights</h3>
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-            {aboutHighlights.map((item) => (
-              <article key={item.label} className="clay-panel p-5">
-                <p className="text-sm uppercase tracking-[0.12em] text-muted">{item.label}</p>
-                <p className="mt-2 font-heading text-2xl text-teal">{item.value}</p>
-                <p className="mt-2 text-sm leading-relaxed text-ink/74">{item.detail}</p>
-              </article>
             ))}
           </div>
         </div>

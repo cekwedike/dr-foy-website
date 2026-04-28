@@ -5,11 +5,11 @@ type BrandWordmarkProps = {
   style?: CSSProperties;
 };
 
-/** Script logotype — uses `--font-wordmark` (Mr Dafoe). Text: Dr Tochukwu MacFoy */
+/** Signature logotype — uses `--font-wordmark` (Ephesis). Text: Dr Tochukwu MacFoy */
 export default function BrandWordmark({ className = "", style }: BrandWordmarkProps) {
   return (
     <span
-      className={`font-wordmark leading-none tracking-tight text-ink ${className}`}
+      className={`font-wordmark leading-none tracking-[0.01em] text-ink [font-feature-settings:'liga'_1,'calt'_1] ${className}`}
       style={style}
     >
       Dr Tochukwu MacFoy

@@ -1,31 +1,28 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans, Mr_Dafoe, Space_Grotesk } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Ephesis, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
-import GrainOverlay from "@/components/GrainOverlay";
 import Navbar from "@/components/Navbar";
-import PageTransition from "@/components/PageTransition";
-import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
+  weight: ["400", "600"],
   variable: "--font-cormorant"
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500"],
   variable: "--font-space"
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
   variable: "--font-dm"
 });
 
-const wordmarkScript = Mr_Dafoe({
+const wordmarkScript = Ephesis({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-wordmark"
@@ -48,12 +45,9 @@ export default function RootLayout({
       className={`${cormorant.variable} ${spaceGrotesk.variable} ${dmSans.variable} ${wordmarkScript.variable}`}
     >
       <body className="bg-background font-body text-ink antialiased">
-        <SmoothScrollProvider>
-          <GrainOverlay />
-          <Navbar />
-          <PageTransition>{children}</PageTransition>
-          <Footer />
-        </SmoothScrollProvider>
+        <Navbar />
+        {children}
+        <Footer />
       </body>
     </html>
   );
