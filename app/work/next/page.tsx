@@ -48,8 +48,7 @@ export default function NextPage() {
           <div className="space-y-5">
             <p>
               Presented by Energize Music, NEXT is Africa&apos;s first pan-African Afrogospel talent
-              competition and creative incubator. Artists from Nigeria, Ghana, Kenya, Uganda, and
-              South Africa submit original music. Judges select the top 50. The public votes to narrow
+              competition and creative incubator. Artists from across Africa submit original music. Judges select the top 50. The public votes to narrow
               it to the top 20. The top 10 go into the studio to record the ENERGIZE Afrogospel Album
               alongside some of the continent&apos;s most respected Afrogospel voices. The top 20
               headline block parties across all five nations. And in October, it all lands at a
