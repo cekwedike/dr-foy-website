@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useLayoutEffect, useRef, useState } from "react";
 import { workItems } from "@/app/data/siteContent";
 
 const items = workItems.slice(0, 3);
@@ -15,14 +15,14 @@ export default function HorizontalBuildsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const [viewportWidth, setViewportWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const viewportWidth = useMotionValue(0);
 
   useLayoutEffect(() => {
     if (prefersReducedMotion) return;
     const update = () => {
       const w = window.innerWidth;
-      setViewportWidth(w);
+      viewportWidth.set(w);
       setIsMobile(w < 768);
     };
     update();
@@ -40,30 +40,20 @@ export default function HorizontalBuildsSection() {
     offset: ["start start", "end end"]
   });
 
-  // Mobile: continuous spring-smoothed translation (feels much smoother on touch devices).
-  // Desktop: keep the snap-to-slide behavior.
-  const x = useSpring(0, {
+  const rawX = useTransform(scrollYProgress, (p) => {
+    const clamped = Math.max(0, Math.min(0.9999, p));
+    const w = Math.max(viewportWidth.get(), 1);
+    if (isMobile) return -clamped * (items.length - 1) * w;
+    const index = Math.min(items.length - 1, Math.floor(clamped * items.length));
+    return -w * index;
+  });
+
+  // Smooth the transform (especially on mobile).
+  const x = useSpring(rawX, {
     stiffness: isMobile ? 160 : 280,
     damping: isMobile ? 34 : 40,
     mass: isMobile ? 0.9 : 0.55
   });
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const unsub = scrollYProgress.on("change", (p) => {
-      const clamped = Math.max(0, Math.min(0.9999, p));
-      const w = viewportWidth || window.innerWidth;
-      if (isMobile) {
-        // Smoothly translate across the full range.
-        x.set(-clamped * (items.length - 1) * w);
-      } else {
-        // Snap: only one slide visible at a time.
-        const index = Math.min(items.length - 1, Math.floor(clamped * items.length));
-        x.set(-w * index);
-      }
-    });
-    return () => unsub();
-  }, [prefersReducedMotion, scrollYProgress, viewportWidth, x, isMobile]);
 
   if (prefersReducedMotion) {
     return (
@@ -168,6 +158,7 @@ export default function HorizontalBuildsSection() {
                   quality={72}
                   placeholder="blur"
                   blurDataURL={SLIDE_BLUR}
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.55),rgba(14,19,24,0.86))]" />
               </div>

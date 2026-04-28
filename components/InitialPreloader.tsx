@@ -10,7 +10,7 @@ export default function InitialPreloader() {
     let done = false;
     // Fixed-duration preloader (requested): keeps the overlay up long enough
     // for critical images to stream in behind the scenes.
-    const fixedTimeMs = 5000;
+    const fixedTimeMs = 3000;
     const start = performance.now();
 
     const finish = () => {
@@ -66,18 +66,18 @@ export default function InitialPreloader() {
       <div className="flex flex-col items-center gap-6">
         <div className="relative">
           <div className="absolute inset-0 -z-10 rounded-full bg-teal/25 blur-2xl animate-[pulse_1.2s_ease-in-out_infinite]" />
-          {/* rotating "belt" ring */}
+          {/* rotating line ring */}
           <div
             aria-hidden
-            className="absolute -inset-3 rounded-[28px] bg-[conic-gradient(from_90deg,rgba(45,191,177,0)_0deg,rgba(45,191,177,0.85)_50deg,rgba(217,101,74,0.75)_110deg,rgba(45,191,177,0)_180deg,rgba(45,191,177,0)_360deg)] animate-spin [mask:radial-gradient(farthest-side,transparent_calc(100%_-_8px),black_calc(100%_-_7px))]"
+            className="absolute -inset-3 rounded-full border-2 border-teal/70 border-t-transparent animate-spin"
           />
           <Image
             src="/images/favicon/android-chrome-192x192.png"
             alt=""
-            width={86}
-            height={86}
+            width={92}
+            height={92}
             priority
-            className="rounded-xl border border-teal/15 bg-[rgba(20,26,33,0.65)] p-2"
+            className="rounded-full border border-teal/15 bg-[rgba(20,26,33,0.65)]"
           />
         </div>
       </div>
