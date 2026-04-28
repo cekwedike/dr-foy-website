@@ -5,20 +5,23 @@ export default function SameEnergyPage() {
     <WorkPageLayout
       heroImage="/images/dr-foy.jpg"
       title="Same Energy Global"
-      subtitle="Creative community built around structure, values, and execution."
+      subtitle="The community where everything started."
       body={
         <div className="space-y-5">
           <p>
-            Same Energy Global represents the community layer around Dr. Foy&apos;s broader culture
-            and media work.
+            Same Energy Global was founded by Dr. Foy as a home for visionary creatives who want to
+            work at the intersection of faith, culture, and media. The core belief is that
+            inspiration without infrastructure is just a feeling.
           </p>
           <p>
-            It is designed for creators who want to pair inspiration with systems: better
-            collaboration, clearer positioning, and stronger execution.
+            Energize Music is the label that grew out of this community. Energize Fest is the live
+            event it produced. Energize Central Media is its storytelling arm. Same Energy is the
+            root of the whole tree.
           </p>
           <p>
-            The ethos aligns with his public emphasis on infrastructure in the creative economy,
-            not just moments of visibility.
+            Dr. Foy has been described as the force that revolutionized Christian entertainment
+            through artist management, content amplification, and distribution. Same Energy Global
+            is where that work lives and grows.
           </p>
         </div>
       }

@@ -8,25 +8,25 @@ const pressMentions = [
     publication: "BusinessDay",
     headline: "Nigeria stands at the frontier of global cultural influence",
     excerpt:
-      "Interview feature covering Dr. Foy's view on infrastructure, financing, IP ownership, and scaling the creative economy."
+      "A deep conversation on why Nigeria's creative economy still lacks the infrastructure to match its global ambition, and what Energize Central is doing to fix that."
   },
   {
     publication: "The Guardian Nigeria",
     headline: "Energize Music enters strategic partnership with Orchard",
     excerpt:
-      "Coverage of the Orchard (Sony Music subsidiary) alliance and Energize Music's distribution ambitions."
+      "The story of Energize Music's 2024 partnership with The Orchard, Sony Music's distribution arm, and what it means for gospel and family music reaching a global audience."
   },
   {
     publication: "The Sun Nigeria",
     headline: "Energize Central becomes face of family entertainment",
     excerpt:
-      "Report citing over 3,000 attendees and positioning Energize Fest as a major family-centered December format."
+      "How Energize Fest pulled over 3,000 people and became Lagos's biggest faith-centered December event, headlined by artists like Greatman Takit, Tope Alabi, and Prince Emmanuel."
   },
   {
     publication: "TurnTable Charts",
     headline: "Industry digest on Energize Music × Orchard",
     excerpt:
-      "Additional industry summary of the strategic alliance and its implications for gospel/family music distribution."
+      "An industry breakdown of the Energize Music and Orchard deal, including direct quotes from the label's Head of Music on the quality standard every artist is held to."
   }
 ];
 
@@ -39,8 +39,8 @@ export default function PressPage() {
 
       <section className="mx-auto max-w-7xl px-6 pb-12 md:px-10 md:pb-20">
         <p className="max-w-3xl font-body text-base leading-relaxed text-ink/78 md:text-lg">
-          Selected coverage and interviews documenting the evolution of Dr. Foy&apos;s work across
-          media, culture, and creative infrastructure.
+          Dr. Foy has been featured in Nigeria&apos;s leading business and culture press. Here&apos;s what
+          they&apos;ve said.
         </p>
         <div className="mt-7 h-px w-full bg-teal/25 md:mt-10" />
 

@@ -69,10 +69,10 @@ export default function Footer() {
             <div className="hidden md:block md:max-w-[16rem]">
               <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Email</h4>
               <a
-                href="mailto:hello@drfoylive.com"
+                href="mailto:doctormacfoy@gmail.com"
                 className="mt-3 inline-flex border-b border-teal/25 pb-1 font-body text-[1.02rem] text-ink/82 transition-colors hover:text-teal"
               >
-                hello@drfoylive.com
+                doctormacfoy@gmail.com
               </a>
             </div>
           </div>

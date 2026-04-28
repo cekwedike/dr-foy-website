@@ -58,7 +58,7 @@ export default function AboutPage() {
       <section className="bg-surface px-5 py-10 md:px-10 md:py-16">
         <div className="mx-auto max-w-7xl">
           <h2 className="text-center font-heading text-[clamp(2.1rem,4.5vw,3.85rem)] text-ink">
-            Boards & Advisory
+            Where He Serves
           </h2>
           <div className="mt-7 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-4 md:gap-5">
             {advisoryCards.map(([org, role]) => (

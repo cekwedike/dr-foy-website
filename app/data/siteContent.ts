@@ -1,7 +1,8 @@
 export const homeContent = {
   eyebrow: "PHYSICIAN · CREATIVE STRATEGIST · CULTURE BUILDER",
   title: "Dr. Tochukwu Macfoy",
-  subtitle: "Building infrastructure for African faith-rooted creativity.",
+  subtitle:
+    "A medical doctor who traded the clinic for the culture. Dr. Foy builds the systems African faith-rooted creatives need to last.",
   cta: {
     label: "Book Dr. Foy",
     href: "/contact"
@@ -27,10 +28,17 @@ export const aboutHighlights = [
 ] as const;
 
 export const aboutNarrative = [
-  "Dr. Tochukwu Macfoy works at the intersection of medicine, culture, and media strategy. He is widely referenced as a physician and creative strategist, and he continues to carry both identities in his work.",
-  "BusinessDay describes him as founder of Energize Central, a network that includes Energize Music, Energize Fest, and Energize Central Media. The same interview notes his work around structured, scalable creative infrastructure.",
-  "Guardian reported Energize Music's strategic alliance with The Orchard, a Sony Music subsidiary, in 2024. That partnership positions the label for wider global distribution.",
-  "Across interviews and public profiles, his work also spans advisory and storytelling roles including Elevate Africa, Woodhall Capital, and creative ecosystem initiatives."
+  "Dr. Tochukwu Macfoy studied medicine at Igbinedion University, Okada and practiced at the Military Hospital in Yaba, Lagos. But even then, his mind was on media.",
+  "He left clinical practice to work in television, hosting shows and producing content at Cool TV, now known as Wazobia TV. He then moved to Viacom Nigeria, now Paramount Africa, where he served as Communications, Partnership, and Special Projects Lead. There, he secured distribution deals for Comedy Central in West Africa and ran campaigns for Airtel, MasterCard, and Access Bank across sub-Saharan Africa.",
+  "He later led content strategy at Dentsu Nigeria, producing over 60 episodes of a Budweiser football series and landing a produced show on Netflix.",
+  "In 2024, Energize Music entered a strategic alliance with The Orchard, a Sony Music subsidiary, expanding its global distribution reach. Lanre Masha, Director of African Operations at The Orchard, described the partnership as a direct response to Energize's track record in Christian and family music.",
+  "Dr. Foy's conviction is simple: African faith-rooted creativity deserves serious infrastructure. He is building it."
+] as const;
+
+export const homeAboutTeaserNarrative = [
+  "Dr. Tochukwu Macfoy trained as a medical doctor at Igbinedion University. Then he walked into media and never looked back.",
+  "Today he runs Energize Central, a creative ecosystem built around faith-rooted music, large-scale live events, and community infrastructure for African creatives. Before Energize, he led partnerships at Viacom Nigeria and served as Content Director at Dentsu Nigeria. He has produced a show on Netflix and executed campaigns for Coca-Cola, Airtel, and MasterCard across sub-Saharan Africa.",
+  "He didn't leave medicine to chase entertainment. He brought the discipline of medicine into building something that lasts."
 ] as const;
 
 export const timeline = [
@@ -84,7 +92,8 @@ export const workItems = [
   {
     slug: "same-energy",
     title: "Same Energy Global",
-    subtitle: "Community architecture for creators with purpose.",
+    subtitle:
+      "A movement for visionary creatives who want to build in Christian entertainment, not just perform in it.",
     image: "/images/dr-foy.jpg",
     body: [
       "Positioned as a values-led creative community layer around the broader Energize ecosystem.",

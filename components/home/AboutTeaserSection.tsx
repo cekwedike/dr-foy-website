@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { aboutNarrative } from "@/app/data/siteContent";
+import { homeAboutTeaserNarrative } from "@/app/data/siteContent";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 const TEASER_BLUR =
@@ -63,7 +63,7 @@ export default function AboutTeaserSection() {
             </motion.h2>
 
             <div className="mt-7 space-y-5 text-[1.02rem] leading-[1.85] text-ink/78 sm:text-lg">
-              {aboutNarrative.slice(0, 2).map((paragraph) => (
+              {homeAboutTeaserNarrative.map((paragraph) => (
                 <motion.p key={paragraph} variants={fadeUpVariant}>
                   {paragraph}
                 </motion.p>
