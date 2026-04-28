@@ -114,10 +114,17 @@ export default function HorizontalBuildsSection() {
   return (
     <div ref={containerRef} className="relative w-full bg-[var(--color-bg-deep)]" style={{ height: outerHeight }}>
       <section className="sticky top-0 flex h-[100svh] min-h-[560px] w-full overflow-hidden">
-        {/* Ambient framing (no cards): subtle vignette + edge fades */}
-        <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_45%,rgba(36,46,56,0)_0%,rgba(14,19,24,0.65)_70%,rgba(14,19,24,0.92)_100%)]" />
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-14 bg-[linear-gradient(to_right,var(--color-bg-deep),transparent)] md:w-24" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-14 bg-[linear-gradient(to_left,var(--color-bg-deep),transparent)] md:w-24" />
+        {/* Ambient framing: keep drama on the LEFT, leave RIGHT clearer for text */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0"
+          aria-hidden
+          style={{
+            background:
+              "linear-gradient(to right, rgba(14,19,24,0.92) 0%, rgba(14,19,24,0.65) 42%, rgba(14,19,24,0.18) 72%, rgba(14,19,24,0) 100%)"
+          }}
+        />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 bg-[linear-gradient(to_right,var(--color-bg-deep),transparent)] md:w-24" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 bg-[linear-gradient(to_left,var(--color-bg-deep),transparent)] md:w-24" />
 
         {/* Section label / progress */}
         <div className="absolute inset-x-0 top-0 z-30 px-5 pt-8 md:px-10 md:pt-12">
@@ -158,24 +165,28 @@ export default function HorizontalBuildsSection() {
                 <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.55),rgba(14,19,24,0.86))]" />
               </div>
 
-              {/* Text overlay */}
-              <div className="relative z-20 flex w-full items-end px-6 pb-14 pt-28 md:px-12 md:pb-20 md:pt-36">
-                <div className="max-w-[min(880px,86vw)]">
-                  <p className="font-display text-[11px] uppercase tracking-[0.34em] text-ink/65">
-                    {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-4 font-heading text-[clamp(2.4rem,7.5vw,5.25rem)] leading-[0.9] text-ink">
-                    {item.title}
-                  </h3>
-                  <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-ink/82 md:text-xl">
-                    {item.subtitle}
-                  </p>
-                  <Link
-                    href={`/work/${item.slug}`}
-                    className="mt-7 inline-flex border-b border-teal/55 pb-1.5 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal"
-                  >
-                    Explore
-                  </Link>
+              {/* Text overlay (right-aligned, ABOVE all overlays) */}
+              <div className="relative z-40 flex w-full items-end px-6 pb-14 pt-28 md:px-12 md:pb-20 md:pt-36">
+                <div className="ml-auto w-[min(560px,92vw)]">
+                  <div className="rounded-[28px] bg-[rgba(10,14,18,0.74)] px-7 py-7 backdrop-blur-lg md:px-10 md:py-9">
+                    <p className="text-right font-display text-[11px] uppercase tracking-[0.34em] text-ink/90">
+                      {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                    </p>
+                    <h3 className="mt-4 text-right font-heading text-[clamp(2.2rem,7vw,4.4rem)] leading-[0.92] text-ink [text-shadow:0_14px_34px_rgba(0,0,0,0.78)]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-4 text-right font-body text-base leading-relaxed text-ink/95 [text-shadow:0_10px_28px_rgba(0,0,0,0.65)] md:text-xl">
+                      {item.subtitle}
+                    </p>
+                    <div className="mt-7 flex justify-end">
+                      <Link
+                        href={`/work/${item.slug}`}
+                        className="inline-flex border-b border-teal/80 pb-1.5 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal"
+                      >
+                        Explore
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
 
