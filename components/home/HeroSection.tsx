@@ -93,7 +93,7 @@ export default function HeroSection() {
   );
 
   return (
-    <section className="relative h-screen min-h-[680px] w-full overflow-hidden">
+    <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden sm:min-h-[620px] md:min-h-[680px]">
       <motion.div
         className="pointer-events-none absolute inset-0 scale-110"
         aria-hidden
@@ -110,7 +110,7 @@ export default function HeroSection() {
           fetchPriority="high"
           placeholder="blur"
           blurDataURL={HERO_BLUR}
-          className="object-cover object-top md:object-[center_28%] lg:object-[center_32%] 2xl:object-[center_36%]"
+          className="object-cover object-top md:object-[center_30%] lg:object-[center_38%] 2xl:object-[center_46%]"
         />
       </motion.div>
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.93))]" />
