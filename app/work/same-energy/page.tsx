@@ -5,24 +5,21 @@ export default function SameEnergyPage() {
     <WorkPageLayout
       heroImage="/images/dr-foy.jpg"
       title="Same Energy Global"
-      subtitle="The community where everything started."
+      subtitle="An agency built to help individuals and organisations scale."
       body={
         <div className="space-y-5">
           <p>
-            Same Energy Global was founded by Dr. Foy as a home for visionary creatives who want to
-            work at the intersection of faith, culture, and media. The core belief is that
-            inspiration without infrastructure is just a feeling.
+            Same Energy Global works with creatives, brands, and organisations who have the vision
+            but need the strategy and systems to grow. The work spans artist management, content
+            amplification, strategic distribution, and creative infrastructure.
           </p>
           <p>
-            Energize Music is the label that grew out of this community. Energize Fest is the live
-            event it produced. Energize Central Media is its storytelling arm. Same Energy is the
-            root of the whole tree.
+            It is the foundation that Energize Music was built on. And it is the engine Dr. Foy has
+            used to build partnerships with global brands like Coca-Cola, Airtel, and MasterCard,
+            and to secure deals like Energize Music&apos;s alliance with The Orchard, a Sony Music
+            subsidiary.
           </p>
-          <p>
-            Dr. Foy has been described as the force that revolutionized Christian entertainment
-            through artist management, content amplification, and distribution. Same Energy Global
-            is where that work lives and grows.
-          </p>
+          <p>Same Energy does not just inspire. It builds.</p>
         </div>
       }
     />

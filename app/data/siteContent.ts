@@ -2,7 +2,7 @@ export const homeContent = {
   eyebrow: "PHYSICIAN · CREATIVE STRATEGIST · CULTURE BUILDER",
   title: "Dr. Tochukwu Macfoy",
   subtitle:
-    "A medical doctor who traded the clinic for the culture. Dr. Foy builds the systems African faith-rooted creatives need to last.",
+    "Medicine trained him. Culture called him. Now he builds infrastructure for African faith-rooted creativity.",
   cta: {
     label: "Book Dr. Foy",
     href: "/contact"

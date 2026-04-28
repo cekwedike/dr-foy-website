@@ -26,6 +26,7 @@ const navLinks = [
 const workLinks = [
   { href: "/work/energize-music", label: "Energize Music" },
   { href: "/work/energize-fest", label: "Energize Fest" },
+  { href: "/work/next", label: "NEXT" },
   { href: "/work/same-energy", label: "Same Energy Global" },
   { href: "/work/speaking", label: "Speaking & Advisory" }
 ];
@@ -103,7 +104,7 @@ export default function Navbar() {
                 fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
               }}
             >
-              WORK ▾
+              ENERGIZE CENTRAL ▾
             </button>
 
             <AnimatePresence>
@@ -223,7 +224,7 @@ export default function Navbar() {
                     aria-expanded={mobileWorkOpen}
                     aria-label="Toggle work links"
                   >
-                    <span>WORK</span>
+                    <span>ENERGIZE CENTRAL</span>
                     <span>{mobileWorkOpen ? "−" : "+"}</span>
                   </button>
 
