@@ -110,7 +110,7 @@ export default function HeroSection() {
           fetchPriority="high"
           placeholder="blur"
           blurDataURL={HERO_BLUR}
-          className="object-cover object-top md:object-[center_30%] lg:object-[center_38%] 2xl:object-[center_46%]"
+          className="object-cover object-top"
         />
       </motion.div>
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.93))]" />
