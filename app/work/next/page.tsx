@@ -8,24 +8,24 @@ export default function NextPage() {
       subtitle="New Era Xceptional Talent"
       body={
         <div className="space-y-5">
+          <p>New Era Xceptional Talent.</p>
           <p>
-            Africa&apos;s boldest Afrogospel talent search. Built by Energize Music to find,
-            develop, and launch the next generation of faith-rooted artists across the continent.
+            Africa has never lacked gifted Afrogospel artists. It has lacked the platform to find
+            them, develop them, and release them to the world. NEXT is that platform.
           </p>
           <p>
-            NEXT is not just a competition. It is a full incubator. Artists across Africa submit
-            their music. Judges select the top 50. The public votes to narrow it to the top 20. The
-            top 20 headline pan-African Afrogospel block parties. The top 10 go into the studio to
-            create the ENERGIZE Afrogospel Album alongside established Afrogospel musicians. The
-            journey ends with a major album launch concert.
+            Presented by Energize Music, NEXT is Africa&apos;s first pan-African Afrogospel talent
+            competition and creative incubator. Artists from Nigeria, Ghana, Kenya, Uganda, and
+            South Africa submit original music. Judges select the top 50. The public votes to narrow
+            it to the top 20. The top 10 go into the studio to record the ENERGIZE Afrogospel Album
+            alongside some of the continent&apos;s most respected Afrogospel voices. The top 20
+            headline block parties across all five nations. And in October, it all lands at a
+            full-scale pan-African album launch concert.
           </p>
           <p>
-            Every phase is content. Every phase builds the artist. And when the competition closes,
-            the development does not stop.
-          </p>
-          <p>
-            NEXT is Energize Music&apos;s statement that African faith-rooted talent deserves serious
-            infrastructure, not just a moment in the spotlight.
+            Every artist who enters also joins the Kingdom Creatives Academy, a long-term creative
+            development community built specifically for Afrogospel artists. The competition ends.
+            The growth does not.
           </p>
         </div>
       }
