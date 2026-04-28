@@ -7,6 +7,9 @@ import { useRef } from "react";
 import { aboutNarrative } from "@/app/data/siteContent";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
+const TEASER_BLUR =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cdefs%3E%3CradialGradient id='g' cx='55%25' cy='35%25' r='92%25'%3E%3Cstop offset='0%25' stop-color='%233a4a58' stop-opacity='0.5'/%3E%3Cstop offset='60%25' stop-color='%2310191f' stop-opacity='0.92'/%3E%3Cstop offset='100%25' stop-color='%230e1318'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='24' height='16' fill='url(%23g)'/%3E%3C/svg%3E";
+
 export default function AboutTeaserSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -19,7 +22,16 @@ export default function AboutTeaserSection() {
     <section ref={sectionRef} className="relative overflow-hidden bg-background">
       <div className="grid min-h-[auto] grid-cols-1 md:min-h-[88vh] md:grid-cols-2">
         <motion.div className="relative min-h-[52vh] md:min-h-[88vh]" style={{ y: imageY }}>
-          <Image src="/images/foy-the-great.png" alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
+          <Image
+            src="/images/foy-the-great.png"
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover object-top md:object-[center_28%]"
+            quality={74}
+            placeholder="blur"
+            blurDataURL={TEASER_BLUR}
+          />
           <div className="absolute inset-0 bg-[linear-gradient(155deg,rgba(45,191,177,0.18),transparent_55%)] mix-blend-overlay" />
           <motion.div
             className="pointer-events-none absolute right-8 top-12 h-24 w-24 rounded-full bg-teal/25 blur-2xl"

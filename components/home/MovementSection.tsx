@@ -6,6 +6,9 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
+const MOVEMENT_BLUR =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cdefs%3E%3CradialGradient id='g' cx='45%25' cy='35%25' r='92%25'%3E%3Cstop offset='0%25' stop-color='%232a3542' stop-opacity='0.45'/%3E%3Cstop offset='55%25' stop-color='%230e1318' stop-opacity='0.9'/%3E%3Cstop offset='100%25' stop-color='%230e1318'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='24' height='16' fill='url(%23g)'/%3E%3C/svg%3E";
+
 export default function MovementSection() {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -22,7 +25,16 @@ export default function MovementSection() {
   return (
     <section className="relative h-[78vh] min-h-[520px] overflow-hidden">
       <div className="absolute inset-0">
-        <Image src="/images/foy.jpg" alt="" fill className="object-cover object-top" sizes="100vw" />
+        <Image
+          src="/images/foy.jpg"
+          alt=""
+          fill
+          className="object-cover object-top md:object-[center_28%]"
+          sizes="100vw"
+          quality={74}
+          placeholder="blur"
+          blurDataURL={MOVEMENT_BLUR}
+        />
       </div>
 
       <div className="absolute inset-0 bg-[linear-gradient(rgba(14,19,24,0.82),rgba(14,19,24,0.78))]" />

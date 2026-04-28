@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans, Ephesis, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import InitialPreloader from "@/components/InitialPreloader";
 import Navbar from "@/components/Navbar";
 
 const cormorant = Cormorant_Garamond({
@@ -74,6 +75,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${spaceGrotesk.variable} ${dmSans.variable} ${wordmarkScript.variable}`}
     >
       <body className="bg-background font-body text-ink antialiased">
+        <InitialPreloader />
         <Navbar />
         {children}
         <Footer />

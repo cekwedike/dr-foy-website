@@ -8,6 +8,9 @@ import { workItems } from "@/app/data/siteContent";
 
 const items = workItems.slice(0, 3);
 
+const SLIDE_BLUR =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cdefs%3E%3CradialGradient id='g' cx='70%25' cy='40%25' r='90%25'%3E%3Cstop offset='0%25' stop-color='%232a3542' stop-opacity='0.55'/%3E%3Cstop offset='55%25' stop-color='%230e1318' stop-opacity='0.92'/%3E%3Cstop offset='100%25' stop-color='%230e1318'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='24' height='16' fill='url(%23g)'/%3E%3C/svg%3E";
+
 export default function HorizontalBuildsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -161,6 +164,10 @@ export default function HorizontalBuildsSection() {
                   sizes="100vw"
                   className="object-cover object-top md:object-[center_30%]"
                   priority={index === 0}
+                  loading="eager"
+                  quality={72}
+                  placeholder="blur"
+                  blurDataURL={SLIDE_BLUR}
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.55),rgba(14,19,24,0.86))]" />
               </div>

@@ -98,7 +98,7 @@ export default function HeroSection() {
         className="pointer-events-none absolute inset-0 scale-110"
         aria-hidden
         animate={{ scale: [1.08, 1.12, 1.08] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 9.8, repeat: Infinity, ease: "easeInOut" }}
       >
         <Image
           src="/images/hero-section.jpg"
@@ -110,7 +110,7 @@ export default function HeroSection() {
           fetchPriority="high"
           placeholder="blur"
           blurDataURL={HERO_BLUR}
-          className="object-cover object-top md:object-[center_32%]"
+          className="object-cover object-top md:object-[center_40%] lg:object-[center_55%] 2xl:object-[center_60%]"
         />
       </motion.div>
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.93))]" />
