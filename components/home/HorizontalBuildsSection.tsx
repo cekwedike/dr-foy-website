@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
+import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { workItems } from "@/app/data/siteContent";
 
 const items = workItems.slice(0, 3);
@@ -13,6 +13,7 @@ export default function HorizontalBuildsSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [scrollDistance, setScrollDistance] = useState<number | null>(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
 
   const measure = () => {
     const track = trackRef.current;
@@ -23,15 +24,20 @@ export default function HorizontalBuildsSection() {
 
   useLayoutEffect(() => {
     if (prefersReducedMotion) return;
+    setViewportWidth(window.innerWidth);
     measure();
     const track = trackRef.current;
     if (!track) return;
     const ro = new ResizeObserver(() => measure());
     ro.observe(track);
-    window.addEventListener("resize", measure, { passive: true } as AddEventListenerOptions);
+    const onResize = () => {
+      setViewportWidth(window.innerWidth);
+      measure();
+    };
+    window.addEventListener("resize", onResize, { passive: true } as AddEventListenerOptions);
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", measure as EventListener);
+      window.removeEventListener("resize", onResize as EventListener);
     };
   }, [prefersReducedMotion]);
 
@@ -40,8 +46,19 @@ export default function HorizontalBuildsSection() {
     offset: ["start start", "end end"]
   });
 
-  const dist = scrollDistance ?? 0;
-  const x = useTransform(scrollYProgress, (progress) => -progress * dist);
+  // Snap so only one slide is visible at a time.
+  // We animate x to the nearest slide boundary (0vw, -100vw, -200vw, ...).
+  const x = useSpring(0, { stiffness: 280, damping: 40, mass: 0.55 });
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const unsub = scrollYProgress.on("change", (p) => {
+      const clamped = Math.max(0, Math.min(0.9999, p));
+      const index = Math.min(items.length - 1, Math.floor(clamped * items.length));
+      x.set(-(viewportWidth || window.innerWidth) * index);
+    });
+    return () => unsub();
+  }, [prefersReducedMotion, scrollYProgress, viewportWidth, x]);
 
   if (prefersReducedMotion) {
     return (
@@ -92,7 +109,7 @@ export default function HorizontalBuildsSection() {
   }
 
   const outerHeight =
-    scrollDistance !== null ? `calc(100vh + ${Math.max(scrollDistance, 0)}px)` : "min(220vh, 3000px)";
+    scrollDistance !== null ? `${items.length * 100}svh` : "min(220vh, 3000px)";
 
   return (
     <div ref={containerRef} className="relative w-full bg-[var(--color-bg-deep)]" style={{ height: outerHeight }}>
@@ -117,45 +134,48 @@ export default function HorizontalBuildsSection() {
           </div>
         </div>
 
-        <motion.div ref={trackRef} style={{ x }} className="flex h-full w-max items-stretch will-change-transform">
+        <motion.div
+          ref={trackRef}
+          style={{ x }}
+          className="flex h-full w-max items-stretch will-change-transform"
+        >
           {items.map((item, index) => (
             <article
               key={item.slug}
-              className="relative flex h-full w-[100vw] shrink-0 items-stretch md:w-[72vw] lg:w-[62vw]"
+              className="relative flex h-full w-[100vw] shrink-0 items-stretch"
             >
-              <div className="relative flex flex-1 items-center px-5 pt-24 md:px-10 md:pt-36">
-                {/* Slide: full-bleed image on mobile, split layout on md+ */}
-                <div className="relative grid w-full grid-cols-1 items-center md:grid-cols-2 md:gap-12">
-                  <div className="relative aspect-[16/11] w-full overflow-hidden md:aspect-[16/10]">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 62vw"
-                      className="object-cover object-top md:object-[center_30%]"
-                      priority={index === 0}
-                      onLoad={measure}
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,19,24,0.72),rgba(14,19,24,0.18)_55%,transparent_100%)] md:bg-[linear-gradient(to_top,rgba(14,19,24,0.6),transparent_60%)]" />
-                  </div>
+              {/* Full-height image like the section above */}
+              <div className="absolute inset-0">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover object-top md:object-[center_30%]"
+                  priority={index === 0}
+                  onLoad={measure}
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.55),rgba(14,19,24,0.86))]" />
+              </div>
 
-                  <div className="relative z-20 -mt-10 md:mt-0">
-                    <p className="font-display text-[11px] uppercase tracking-[0.34em] text-ink/55">
-                      {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-                    </p>
-                    <h3 className="mt-4 font-heading text-[clamp(2.15rem,7.5vw,4.6rem)] leading-[0.9] text-ink">
-                      {item.title}
-                    </h3>
-                    <p className="mt-4 max-w-xl font-body text-base leading-relaxed text-ink/78 md:text-xl">
-                      {item.subtitle}
-                    </p>
-                    <Link
-                      href={`/work/${item.slug}`}
-                      className="mt-7 inline-flex border-b border-teal/45 pb-1.5 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal"
-                    >
-                      Explore
-                    </Link>
-                  </div>
+              {/* Text overlay */}
+              <div className="relative z-20 flex w-full items-end px-6 pb-14 pt-28 md:px-12 md:pb-20 md:pt-36">
+                <div className="max-w-[min(880px,86vw)]">
+                  <p className="font-display text-[11px] uppercase tracking-[0.34em] text-ink/65">
+                    {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-4 font-heading text-[clamp(2.4rem,7.5vw,5.25rem)] leading-[0.9] text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-ink/82 md:text-xl">
+                    {item.subtitle}
+                  </p>
+                  <Link
+                    href={`/work/${item.slug}`}
+                    className="mt-7 inline-flex border-b border-teal/55 pb-1.5 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal"
+                  >
+                    Explore
+                  </Link>
                 </div>
               </div>
 
