@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { aboutHighlights, aboutNarrative } from "@/app/data/siteContent";
+import { aboutNarrative } from "@/app/data/siteContent";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 export default function AboutTeaserSection() {
@@ -16,7 +16,7 @@ export default function AboutTeaserSection() {
   const imageY = useTransform(scrollYProgress, [0, 1], [0, -36]);
 
   return (
-    <section ref={sectionRef} className="relative bg-background">
+    <section ref={sectionRef} className="relative overflow-hidden bg-background">
       <div className="grid min-h-[auto] grid-cols-1 md:min-h-[88vh] md:grid-cols-2">
         <motion.div className="relative min-h-[52vh] md:min-h-[88vh]" style={{ y: imageY }}>
           <Image src="/images/foy-the-great.png" alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
@@ -55,18 +55,6 @@ export default function AboutTeaserSection() {
                 <motion.p key={paragraph} variants={fadeUpVariant}>
                   {paragraph}
                 </motion.p>
-              ))}
-            </div>
-
-            <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-3">
-              {aboutHighlights.map((item) => (
-                <motion.div key={item.label} variants={fadeUpVariant} className="clay-panel p-5">
-                  <p className="font-display text-[11px] uppercase tracking-[0.14em] text-muted">{item.label}</p>
-                  <p className="font-heading mt-2 text-[1.45rem] leading-tight text-coral sm:text-[1.6rem]">
-                    {item.value}
-                  </p>
-                  <p className="mt-2 font-body text-sm leading-relaxed text-ink/74">{item.detail}</p>
-                </motion.div>
               ))}
             </div>
 

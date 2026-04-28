@@ -2,18 +2,74 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useMemo } from "react";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 import { homeContent } from "@/app/data/siteContent";
-import { easings, fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
+import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
-const headingWords = homeContent.title.split(" ");
+const heroHeadlines = [
+  homeContent.title,
+  "Physician. Creative Strategist.",
+  "Culture Builder. Ecosystem Architect."
+];
 
 export default function HeroSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const [headlineIndex, setHeadlineIndex] = useState(0);
+  const [transitionVariant, setTransitionVariant] = useState(0);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 260, damping: 18, mass: 0.45 });
   const sy = useSpring(my, { stiffness: 260, damping: 18, mass: 0.45 });
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const id = window.setInterval(() => {
+      setHeadlineIndex((prev) => (prev + 1) % heroHeadlines.length);
+      setTransitionVariant((prev) => (prev + 1) % 3);
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [prefersReducedMotion]);
+
+  const headlineMotion = useMemo(() => {
+    // We cycle between a few tasteful transitions so it doesn't feel repetitive.
+    // Variant 0: blur + vertical slide
+    // Variant 1: soft dissolve + micro-scale
+    // Variant 2: lateral glide + skew hint (very subtle)
+    if (prefersReducedMotion) {
+      return {
+        initial: { opacity: 1 },
+        animate: { opacity: 1 },
+        exit: { opacity: 1 },
+        transition: { duration: 0 }
+      } as const;
+    }
+
+    if (transitionVariant === 1) {
+      return {
+        initial: { opacity: 0, scale: 0.985, filter: "blur(2px)" },
+        animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+        exit: { opacity: 0, scale: 1.01, filter: "blur(3px)" },
+        transition: { duration: 0.52, ease: "easeOut" }
+      } as const;
+    }
+
+    if (transitionVariant === 2) {
+      return {
+        initial: { opacity: 0, x: 26, rotate: 0.25, filter: "blur(4px)" },
+        animate: { opacity: 1, x: 0, rotate: 0, filter: "blur(0px)" },
+        exit: { opacity: 0, x: -18, rotate: -0.2, filter: "blur(3px)" },
+        transition: { duration: 0.55, ease: "easeOut" }
+      } as const;
+    }
+
+    return {
+      initial: { opacity: 0, y: 24, filter: "blur(6px)" },
+      animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+      exit: { opacity: 0, y: -16, filter: "blur(4px)" },
+      transition: { duration: 0.5, ease: "easeOut" }
+    } as const;
+  }, [prefersReducedMotion, transitionVariant]);
 
   const ctaHandlers = useMemo(
     () => ({
@@ -93,25 +149,21 @@ export default function HeroSection() {
           </motion.p>
 
           <motion.h1
-            variants={staggerContainer}
+            variants={fadeUpVariant}
             className="font-heading mt-5 text-[clamp(3rem,10vw,7.5rem)] font-light leading-[0.92] text-ink"
           >
-            {headingWords.map((word, index) => (
+            <AnimatePresence mode="wait" initial={false}>
               <motion.span
-                key={`${word}-${index}`}
-                className="mr-[0.22ch] inline-block"
-                variants={{
-                  hidden: { opacity: 0, y: 48 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.75, ease: easings.smoothOut }
-                  }
-                }}
+                key={heroHeadlines[headlineIndex]}
+                className="inline-block"
+                initial={headlineMotion.initial}
+                animate={headlineMotion.animate}
+                exit={headlineMotion.exit}
+                transition={headlineMotion.transition}
               >
-                {word}
+                {heroHeadlines[headlineIndex]}
               </motion.span>
-            ))}
+            </AnimatePresence>
           </motion.h1>
 
           <motion.p
