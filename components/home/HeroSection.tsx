@@ -7,6 +7,9 @@ import { useEffect, useMemo, useState } from "react";
 import { homeContent } from "@/app/data/siteContent";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
+const HERO_BLUR =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cdefs%3E%3CradialGradient id='g' cx='65%25' cy='35%25' r='85%25'%3E%3Cstop offset='0%25' stop-color='%23304657' stop-opacity='0.55'/%3E%3Cstop offset='55%25' stop-color='%2310191f' stop-opacity='0.85'/%3E%3Cstop offset='100%25' stop-color='%230e1318'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='24' height='16' fill='url(%23g)'/%3E%3C/svg%3E";
+
 const heroHeadlines = [
   homeContent.title,
   "Physician. Creative Strategist.",
@@ -95,7 +98,7 @@ export default function HeroSection() {
         className="pointer-events-none absolute inset-0 scale-110"
         aria-hidden
         animate={{ scale: [1.08, 1.12, 1.08] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       >
         <Image
           src="/images/hero-section.jpg"
@@ -103,7 +106,11 @@ export default function HeroSection() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-top"
+          quality={72}
+          fetchPriority="high"
+          placeholder="blur"
+          blurDataURL={HERO_BLUR}
+          className="object-cover object-top md:object-[center_32%]"
         />
       </motion.div>
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.93))]" />

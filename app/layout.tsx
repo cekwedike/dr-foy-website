@@ -48,6 +48,7 @@ export const metadata: Metadata = {
   manifest: "/images/favicon/site.webmanifest",
   openGraph: {
     type: "website",
+    url: "/",
     title: "Dr. Tochukwu Macfoy",
     description:
       "Physician and creative strategist leading Energize Central across media, music, and live culture.",
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     title: "Dr. Tochukwu Macfoy",
     description:
       "Physician and creative strategist leading Energize Central across media, music, and live culture.",
-    images: ["/images/hero-section.jpg"]
+    images: [{ url: "/images/hero-section.jpg", alt: "Dr. Tochukwu Macfoy" }]
   }
 };
 

@@ -12,31 +12,22 @@ export default function HorizontalBuildsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const [scrollDistance, setScrollDistance] = useState<number | null>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
-
-  const measure = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const overflow = Math.max(track.scrollWidth - window.innerWidth, 0);
-    setScrollDistance(overflow);
-  };
+  const [isMobile, setIsMobile] = useState(false);
 
   useLayoutEffect(() => {
     if (prefersReducedMotion) return;
-    setViewportWidth(window.innerWidth);
-    measure();
-    const track = trackRef.current;
-    if (!track) return;
-    const ro = new ResizeObserver(() => measure());
-    ro.observe(track);
+    const update = () => {
+      const w = window.innerWidth;
+      setViewportWidth(w);
+      setIsMobile(w < 768);
+    };
+    update();
     const onResize = () => {
-      setViewportWidth(window.innerWidth);
-      measure();
+      update();
     };
     window.addEventListener("resize", onResize, { passive: true } as AddEventListenerOptions);
     return () => {
-      ro.disconnect();
       window.removeEventListener("resize", onResize as EventListener);
     };
   }, [prefersReducedMotion]);
@@ -46,19 +37,30 @@ export default function HorizontalBuildsSection() {
     offset: ["start start", "end end"]
   });
 
-  // Snap so only one slide is visible at a time.
-  // We animate x to the nearest slide boundary (0vw, -100vw, -200vw, ...).
-  const x = useSpring(0, { stiffness: 280, damping: 40, mass: 0.55 });
+  // Mobile: continuous spring-smoothed translation (feels much smoother on touch devices).
+  // Desktop: keep the snap-to-slide behavior.
+  const x = useSpring(0, {
+    stiffness: isMobile ? 160 : 280,
+    damping: isMobile ? 34 : 40,
+    mass: isMobile ? 0.9 : 0.55
+  });
 
   useEffect(() => {
     if (prefersReducedMotion) return;
     const unsub = scrollYProgress.on("change", (p) => {
       const clamped = Math.max(0, Math.min(0.9999, p));
-      const index = Math.min(items.length - 1, Math.floor(clamped * items.length));
-      x.set(-(viewportWidth || window.innerWidth) * index);
+      const w = viewportWidth || window.innerWidth;
+      if (isMobile) {
+        // Smoothly translate across the full range.
+        x.set(-clamped * (items.length - 1) * w);
+      } else {
+        // Snap: only one slide visible at a time.
+        const index = Math.min(items.length - 1, Math.floor(clamped * items.length));
+        x.set(-w * index);
+      }
     });
     return () => unsub();
-  }, [prefersReducedMotion, scrollYProgress, viewportWidth, x]);
+  }, [prefersReducedMotion, scrollYProgress, viewportWidth, x, isMobile]);
 
   if (prefersReducedMotion) {
     return (
@@ -108,8 +110,7 @@ export default function HorizontalBuildsSection() {
     );
   }
 
-  const outerHeight =
-    scrollDistance !== null ? `${items.length * 100}svh` : "min(220vh, 3000px)";
+  const outerHeight = `${items.length * 100}svh`;
 
   return (
     <div ref={containerRef} className="relative w-full bg-[var(--color-bg-deep)]" style={{ height: outerHeight }}>
@@ -160,7 +161,6 @@ export default function HorizontalBuildsSection() {
                   sizes="100vw"
                   className="object-cover object-top md:object-[center_30%]"
                   priority={index === 0}
-                  onLoad={measure}
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.55),rgba(14,19,24,0.86))]" />
               </div>
