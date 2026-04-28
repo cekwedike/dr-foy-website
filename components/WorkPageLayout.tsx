@@ -12,6 +12,8 @@ type WorkPageLayoutProps = {
   heroImage: string;
   body: ReactNode;
   accentColor?: string;
+  /** When set, replaces the default text hero title (use accessible content inside, e.g. Image alt). */
+  heroTitle?: ReactNode;
 };
 
 export default function WorkPageLayout({
@@ -19,7 +21,8 @@ export default function WorkPageLayout({
   subtitle,
   heroImage,
   body,
-  accentColor = "#D9654A"
+  accentColor = "#D9654A",
+  heroTitle
 }: WorkPageLayoutProps) {
   return (
     <main className="bg-background pt-20">
@@ -46,9 +49,18 @@ export default function WorkPageLayout({
           animate="visible"
           className="relative z-10 px-6 text-center"
         >
-          <motion.h1 variants={fadeUpVariant} className="font-heading text-[clamp(2.8rem,7vw,5.4rem)] text-ink">
-            {title}
-          </motion.h1>
+          {heroTitle ? (
+            <>
+              <h1 className="sr-only">{title}</h1>
+              <motion.div variants={fadeUpVariant} className="mx-auto w-full max-w-[min(92vw,36rem)]">
+                {heroTitle}
+              </motion.div>
+            </>
+          ) : (
+            <motion.h1 variants={fadeUpVariant} className="font-heading text-[clamp(2.8rem,7vw,5.4rem)] text-ink">
+              {title}
+            </motion.h1>
+          )}
           <motion.p variants={fadeUpVariant} className="mx-auto mt-4 max-w-3xl font-body text-lg text-ink/84 md:text-2xl">
             {subtitle}
           </motion.p>
