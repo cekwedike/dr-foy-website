@@ -29,12 +29,7 @@ export default function ContactPage() {
             Contact
           </motion.h1>
           <motion.div variants={fadeUpVariant} className="mt-6 space-y-2.5 font-body text-base leading-relaxed text-ink/88 md:mt-8 md:space-y-3">
-            <p>
-              Email:{" "}
-              <a href="mailto:doctormacfoy@gmail.com" className="text-teal hover:underline">
-              doctormacfoy@gmail.com
-              </a>
-            </p>
+            <p>For bookings and inquiries, use the form below.</p>
             <p>
               Instagram:{" "}
               <Link href="https://instagram.com/drfoy" className="text-teal hover:underline">

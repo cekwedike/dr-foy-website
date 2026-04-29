@@ -67,13 +67,13 @@ export default function Footer() {
             </div>
 
             <div className="hidden md:block md:max-w-[16rem]">
-              <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Email</h4>
-              <a
-                href="mailto:doctormacfoy@gmail.com"
+              <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Get in touch</h4>
+              <Link
+                href="/contact"
                 className="mt-3 inline-flex border-b border-teal/25 pb-1 font-body text-[1.02rem] text-ink/82 transition-colors hover:text-teal"
               >
-                doctormacfoy@gmail.com
-              </a>
+                Contact form
+              </Link>
             </div>
           </div>
         </div>
