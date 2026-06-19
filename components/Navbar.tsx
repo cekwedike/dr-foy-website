@@ -183,116 +183,130 @@ export default function Navbar() {
 
       <AnimatePresence>
         {mobileMenuOpen ? (
-          <motion.aside
-            className="fixed inset-0 z-[60] 2xl:hidden"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ backgroundColor: PALETTE.background }}
-          >
-            <div className="flex h-full flex-col px-6 py-6">
-              <div className="mb-10 flex items-start justify-end">
-                <button
-                  type="button"
-                  aria-label="Close mobile menu"
-                  className="p-2"
-                  style={{ color: PALETTE.ink }}
-                  onClick={closeMobileMenu}
-                >
-                  <RxCross2 size={28} />
-                </button>
-              </div>
+          <>
+            <motion.button
+              key="mobile-menu-backdrop"
+              type="button"
+              aria-label="Close mobile menu"
+              className="fixed inset-0 z-[55] bg-[rgba(14,19,24,0.55)] backdrop-blur-[2px] 2xl:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.24, ease: "easeOut" }}
+              onClick={closeMobileMenu}
+            />
 
-              <motion.div
-                className="flex flex-col gap-5"
-                variants={mobileContainer}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-              >
-                <motion.div variants={mobileItem}>
-                  <MobileLink href="/" label="HOME" onNavigate={closeMobileMenu} />
-                </motion.div>
-                <motion.div variants={mobileItem}>
-                  <MobileLink href="/about" label="ABOUT" onNavigate={closeMobileMenu} />
-                </motion.div>
-
-                <motion.div variants={mobileItem}>
+            <motion.aside
+              key="mobile-menu-drawer"
+              className="fixed inset-y-0 right-0 z-[60] flex w-1/2 min-w-[17.5rem] max-w-[22rem] flex-col border-l border-teal/20 bg-[rgba(14,19,24,0.88)] shadow-[-12px_0_40px_rgba(0,0,0,0.35)] backdrop-blur-md 2xl:hidden sm:max-w-none"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <div className="flex h-full flex-col overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
+                <div className="mb-8 flex items-start justify-end sm:mb-10">
                   <button
                     type="button"
-                    className="flex w-full items-center justify-between text-left text-base uppercase tracking-[0.18em]"
-                    style={{
-                      color: PALETTE.ink,
-                      fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-                    }}
-                    onClick={() => setMobileWorkOpen((prev) => !prev)}
-                    aria-expanded={mobileWorkOpen}
-                    aria-label="Toggle work links"
-                  >
-                    <span>ENERGIZE CENTRAL</span>
-                    <span>{mobileWorkOpen ? "−" : "+"}</span>
-                  </button>
-
-                  <AnimatePresence initial={false}>
-                    {mobileWorkOpen ? (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.24, ease: "easeOut" }}
-                        className="mt-3 border-l-2 pl-4"
-                        style={{ borderLeftColor: PALETTE.teal }}
-                      >
-                        <div className="flex flex-col gap-3">
-                          {workLinks.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              onClick={closeMobileMenu}
-                              className="text-base transition-colors duration-200"
-                              style={{
-                                color: PALETTE.ink,
-                                fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-                              }}
-                              onMouseEnter={(event) => {
-                                event.currentTarget.style.color = PALETTE.teal;
-                              }}
-                              onMouseLeave={(event) => {
-                                event.currentTarget.style.color = PALETTE.ink;
-                              }}
-                            >
-                              {item.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    ) : null}
-                  </AnimatePresence>
-                </motion.div>
-
-                <motion.div variants={mobileItem}>
-                  <MobileLink href="/press" label="PRESS" onNavigate={closeMobileMenu} />
-                </motion.div>
-                <motion.div variants={mobileItem}>
-                  <MobileLink href="/contact" label="CONTACT" onNavigate={closeMobileMenu} />
-                </motion.div>
-
-                <motion.div variants={mobileItem} className="pt-4">
-                  <Link
-                    href="/contact"
+                    aria-label="Close mobile menu"
+                    className="p-2"
+                    style={{ color: PALETTE.ink }}
                     onClick={closeMobileMenu}
-                    className="inline-flex border border-ink/30 px-6 py-2.5 text-sm uppercase tracking-[0.16em] text-ink transition-colors hover:border-teal hover:text-teal"
-                    style={{
-                      fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-                    }}
                   >
-                    Book Dr. Foy
-                  </Link>
+                    <RxCross2 size={26} />
+                  </button>
+                </div>
+
+                <motion.div
+                  className="flex flex-col gap-4 sm:gap-5"
+                  variants={mobileContainer}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  <motion.div variants={mobileItem}>
+                    <MobileLink href="/" label="HOME" onNavigate={closeMobileMenu} />
+                  </motion.div>
+                  <motion.div variants={mobileItem}>
+                    <MobileLink href="/about" label="ABOUT" onNavigate={closeMobileMenu} />
+                  </motion.div>
+
+                  <motion.div variants={mobileItem}>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between gap-3 text-left text-sm uppercase tracking-[0.14em] sm:text-base sm:tracking-[0.18em]"
+                      style={{
+                        color: PALETTE.ink,
+                        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
+                      }}
+                      onClick={() => setMobileWorkOpen((prev) => !prev)}
+                      aria-expanded={mobileWorkOpen}
+                      aria-label="Toggle work links"
+                    >
+                      <span className="text-pretty">ENERGIZE CENTRAL</span>
+                      <span className="shrink-0">{mobileWorkOpen ? "−" : "+"}</span>
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {mobileWorkOpen ? (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.24, ease: "easeOut" }}
+                          className="mt-3 border-l-2 pl-3 sm:pl-4"
+                          style={{ borderLeftColor: PALETTE.teal }}
+                        >
+                          <div className="flex flex-col gap-2.5 sm:gap-3">
+                            {workLinks.map((item) => (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={closeMobileMenu}
+                                className="text-sm transition-colors duration-200 sm:text-base"
+                                style={{
+                                  color: PALETTE.ink,
+                                  fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
+                                }}
+                                onMouseEnter={(event) => {
+                                  event.currentTarget.style.color = PALETTE.teal;
+                                }}
+                                onMouseLeave={(event) => {
+                                  event.currentTarget.style.color = PALETTE.ink;
+                                }}
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </motion.div>
+
+                  <motion.div variants={mobileItem}>
+                    <MobileLink href="/press" label="PRESS" onNavigate={closeMobileMenu} />
+                  </motion.div>
+                  <motion.div variants={mobileItem}>
+                    <MobileLink href="/contact" label="CONTACT" onNavigate={closeMobileMenu} />
+                  </motion.div>
+
+                  <motion.div variants={mobileItem} className="pt-3 sm:pt-4">
+                    <Link
+                      href="/contact"
+                      onClick={closeMobileMenu}
+                      className="inline-flex border border-ink/30 px-5 py-2 text-xs uppercase tracking-[0.14em] text-ink transition-colors hover:border-teal hover:text-teal sm:px-6 sm:py-2.5 sm:text-sm sm:tracking-[0.16em]"
+                      style={{
+                        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
+                      }}
+                    >
+                      Book Dr. Foy
+                    </Link>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            </div>
-          </motion.aside>
+              </div>
+            </motion.aside>
+          </>
         ) : null}
       </AnimatePresence>
     </motion.nav>
@@ -324,7 +338,7 @@ function MobileLink({ href, label, onNavigate }: LinkProps & { onNavigate: () =>
     <Link
       href={href}
       onClick={onNavigate}
-      className="text-base uppercase tracking-[0.18em] transition-colors duration-200 hover:text-teal"
+      className="text-sm uppercase tracking-[0.14em] transition-colors duration-200 hover:text-teal sm:text-base sm:tracking-[0.18em]"
       style={{
         color: PALETTE.ink,
         fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"

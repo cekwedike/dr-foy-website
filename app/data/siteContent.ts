@@ -112,6 +112,22 @@ export const workItems = [
   }
 ] as const;
 
+export const homeMovementClosing = {
+  eyebrow: "The movement",
+  title: ["Still early.", "Just beginning."],
+  body:
+    "The Afrogospel movement is still early. The infrastructure is just beginning — built for faith-rooted creatives who want more than a moment.",
+  ctas: [
+    { label: "See Energize Fest", href: "/work/energize-fest" },
+    { label: "Book Dr. Foy", href: "/contact" }
+  ],
+  pillars: [
+    { label: "Live gatherings", href: "/work/energize-fest" },
+    { label: "Global distribution", href: "/work/energize-music" },
+    { label: "Creator community", href: "/work/same-energy" }
+  ]
+} as const;
+
 export const verifiedSources = [
   {
     title: "BusinessDay interview",
