@@ -32,14 +32,14 @@ const wordmarkScript = Ephesis({
 
 export const viewport: Viewport = {
   width: "device-width",
-  initialScale: 1
+  initialScale: 1,
+  themeColor: "#0e1318"
 };
 
 export const metadata: Metadata = {
   title: "Dr. Tochukwu Macfoy | Physician · Creative Strategist · Culture Builder",
   description:
     "Official portfolio of Dr. Tochukwu Macfoy, physician and creative strategist leading Energize Central across media, music, and live culture.",
-  applicationName: "Dr. Tochukwu Macfoy",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ??
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
@@ -53,7 +53,6 @@ export const metadata: Metadata = {
     apple: [{ url: "/images/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"]
   },
-  manifest: "/images/favicon/site.webmanifest",
   openGraph: {
     type: "website",
     url: "/",
