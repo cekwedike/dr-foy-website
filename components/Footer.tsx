@@ -1,16 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { type ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
 import BrandWordmark from "@/components/BrandWordmark";
-import { depthChild3D, staggerContainer } from "@/components/motion/tokens";
+import { homeContent } from "@/app/data/siteContent";
+import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
-const quickLinks = [
+const siteLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/press", label: "Press" },
   { href: "/contact", label: "Contact" }
+];
+
+const workLinks = [
+  { href: "/work/energize-music", label: "Energize Music" },
+  { href: "/work/energize-fest", label: "Energize Fest" },
+  { href: "/work/next", label: "NEXT" },
+  { href: "/work/same-energy", label: "Same Energy Global" },
+  { href: "/work/speaking", label: "Speaking & Advisory" }
 ];
 
 const socials = [
@@ -19,82 +29,142 @@ const socials = [
   { href: "https://www.youtube.com/@drfoy?sub_confirmation=1", label: "YouTube", icon: FiYoutube }
 ];
 
-export default function Footer() {
+function FooterLinkColumn({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <footer className="overflow-x-clip border-t border-teal/25 bg-background px-5 py-9 sm:px-6 md:px-10 md:py-12">
-      <div className="page-container">
+    <div>
+      <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
+        {title}
+      </p>
+      <div className="mt-3 h-px w-10 bg-teal/30 sm:mt-4" />
+      <div className="mt-4 flex flex-col gap-2.5 sm:mt-5 sm:gap-3">{children}</div>
+    </div>
+  );
+}
+
+function FooterLink({ href, label, external = false }: { href: string; label: string; external?: boolean }) {
+  const className =
+    "font-body text-sm text-ink/82 transition-colors hover:text-teal sm:text-[0.95rem] md:text-base";
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className}>
+        {label}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className}>
+      {label}
+    </Link>
+  );
+}
+
+export default function Footer() {
+  const prefersReducedMotion = useReducedMotion();
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="relative overflow-x-clip border-t border-teal/20 bg-[var(--color-bg-deep)]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_0%_100%,rgba(45,191,177,0.07),transparent_55%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_100%_0%,rgba(217,101,74,0.05),transparent_50%)]"
+      />
+
+      <div className="page-container relative py-12 sm:py-14 md:py-16 lg:py-20">
         <motion.div
-          className="grid grid-cols-1 items-start gap-9 md:grid-cols-12 md:gap-10"
-          initial="hidden"
+          initial={prefersReducedMotion ? "visible" : "hidden"}
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           variants={staggerContainer}
         >
-          <motion.div variants={depthChild3D} className="md:col-span-4">
-            <BrandWordmark className="text-[clamp(1.2rem,4vw,1.95rem)] text-coral" />
-            <p className="mt-2 max-w-sm font-body text-[1.02rem] leading-relaxed text-muted md:mt-3 md:text-base">
-              Physician. Strategist. Culture Builder.
-            </p>
+          <motion.div variants={fadeUpVariant} className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+            <div className="max-w-md">
+              <Link href="/" aria-label="Dr Tochukwu MacFoy home">
+                <BrandWordmark className="text-[clamp(1.35rem,4.5vw,2.1rem)] text-coral" />
+              </Link>
+              <p className="mt-3 font-display text-[10px] uppercase tracking-[0.26em] text-teal/90 sm:mt-4 sm:text-[11px] sm:tracking-[0.3em]">
+                Physician · Strategist · Culture Builder
+              </p>
+              <p className="mt-3 max-w-sm font-body text-sm leading-relaxed text-muted sm:mt-4 sm:text-[0.95rem]">
+                Building infrastructure for African faith-rooted creativity.
+              </p>
+              <Link
+                href={homeContent.cta.href}
+                className="mt-6 inline-flex border-b border-teal/55 pb-1.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:text-teal sm:mt-7 sm:text-sm"
+              >
+                {homeContent.cta.label}
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 sm:gap-10 md:grid-cols-3 lg:gap-14 xl:gap-16">
+              <motion.div variants={fadeUpVariant}>
+                <FooterLinkColumn title="Site">
+                  {siteLinks.map((item) => (
+                    <FooterLink key={item.href} href={item.href} label={item.label} />
+                  ))}
+                </FooterLinkColumn>
+              </motion.div>
+
+              <motion.div variants={fadeUpVariant} className="col-span-2 md:col-span-1">
+                <FooterLinkColumn title="Energize Central">
+                  {workLinks.map((item) => (
+                    <FooterLink key={item.href} href={item.href} label={item.label} />
+                  ))}
+                </FooterLinkColumn>
+              </motion.div>
+
+              <motion.div variants={fadeUpVariant} className="col-span-2 md:col-span-1">
+                <FooterLinkColumn title="Connect">
+                  <div className="flex flex-col gap-3">
+                    {socials.map((social) => {
+                      const Icon = social.icon;
+                      return (
+                        <a
+                          key={social.label}
+                          href={social.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={social.label}
+                          className="group inline-flex items-center gap-2.5 font-body text-sm text-ink/82 transition-colors hover:text-teal sm:text-[0.95rem] md:text-base"
+                        >
+                          <Icon
+                            size={16}
+                            className="text-teal/70 transition-colors group-hover:text-teal"
+                            aria-hidden
+                          />
+                          {social.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                  <Link
+                    href="/contact"
+                    className="mt-4 inline-flex border-b border-teal/35 pb-1 font-body text-sm text-ink/75 transition-colors hover:border-teal/60 hover:text-teal sm:mt-5 sm:text-[0.95rem]"
+                  >
+                    Contact form
+                  </Link>
+                </FooterLinkColumn>
+              </motion.div>
+            </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3 lg:gap-10">
-            <motion.div variants={depthChild3D} className="w-full md:max-w-[14rem]">
-              <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Quick Links</h4>
-              <nav className="mt-3 flex flex-col gap-2">
-                {quickLinks.map((item) => (
-                  <motion.div key={item.href} whileHover={{ x: 4, rotateY: 6 }}>
-                    <Link
-                      href={item.href}
-                      className="font-body text-base text-ink/88 transition-colors hover:text-coral md:text-[1.02rem]"
-                    >
-                      {item.label}
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
-            </motion.div>
-
-            <motion.div variants={depthChild3D} className="w-full md:max-w-[14rem]">
-              <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Social</h4>
-              <div className="mt-3 flex items-center justify-start gap-3 md:gap-4">
-                {socials.map((social) => {
-                  const Icon = social.icon;
-                  return (
-                    <motion.a
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={social.label}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-teal/15 bg-[rgba(20,26,33,0.55)] text-muted transition-colors hover:text-coral"
-                      whileHover={{ scale: 1.08, rotateY: 18, z: 12 }}
-                      transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                    >
-                      <Icon size={18} />
-                    </motion.a>
-                  );
-                })}
-              </div>
-            </motion.div>
-
-            <motion.div variants={depthChild3D} className="hidden w-full lg:block lg:max-w-[16rem]">
-              <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Get in touch</h4>
-              <Link
-                href="/contact"
-                className="mt-3 inline-flex border-b border-teal/25 pb-1 font-body text-[1.02rem] text-ink/82 transition-colors hover:text-teal"
-              >
-                Contact form
-              </Link>
-            </motion.div>
-          </div>
+          <motion.div
+            variants={fadeUpVariant}
+            className="mt-10 flex flex-col gap-3 border-t border-teal/15 pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:pt-7 md:mt-14"
+          >
+            <p className="font-body text-xs text-muted sm:text-sm">
+              © {year} Dr. Tochukwu Macfoy. All rights reserved.
+            </p>
+            <p className="font-display text-[10px] uppercase tracking-[0.24em] text-ink/40 sm:text-[11px]">
+              Faith-rooted culture · Built to last
+            </p>
+          </motion.div>
         </motion.div>
-
-        <div className="mt-9 h-px w-full bg-ink/10 md:mt-10" />
-        <div className="mt-4 flex flex-col gap-2 text-sm text-muted sm:flex-row sm:items-center sm:justify-between md:mt-5">
-          <p className="font-body">
-            © {new Date().getFullYear()} Dr. Tochukwu Macfoy. All rights reserved.
-          </p>
-        </div>
       </div>
     </footer>
   );
