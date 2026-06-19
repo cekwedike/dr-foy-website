@@ -113,7 +113,7 @@ export default function HeroSection() {
           className="object-cover object-top"
         />
       </motion.div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.93))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.82)_72%,var(--color-bg-deep))]" />
 
       <motion.div
         className="pointer-events-none absolute -left-28 -top-28 h-[480px] w-[480px] rounded-full blur-2xl"

@@ -28,18 +28,10 @@ const ABOUT_BLUR =
 
 function SectionHeader({ hint }: { hint: string }) {
   return (
-    <div className="absolute inset-x-0 top-0 z-30 px-4 pt-6 sm:px-5 sm:pt-8 md:px-10 md:pt-12">
-      <div className="flex items-end justify-between gap-4 sm:gap-6">
-        <div className="min-w-0">
-          <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-xs sm:tracking-[0.32em] md:text-sm">
-            What he builds
-          </p>
-          <div className="mt-3 h-px w-[min(520px,72vw)] bg-teal/25 sm:mt-4" />
-        </div>
-        <p className="shrink-0 font-display text-[9px] uppercase tracking-[0.22em] text-ink/55 sm:text-xs sm:tracking-[0.28em]">
-          {hint}
-        </p>
-      </div>
+    <div className="absolute inset-x-0 top-0 z-30 flex justify-end px-4 pt-6 sm:px-5 sm:pt-8 md:px-10 md:pt-10">
+      <p className="shrink-0 font-display text-[9px] uppercase tracking-[0.22em] text-ink/55 sm:text-xs sm:tracking-[0.28em]">
+        {hint}
+      </p>
     </div>
   );
 }
