@@ -14,7 +14,7 @@ const advisoryCards = [
 
 export default function AboutPage() {
   return (
-    <main className="bg-background pt-20">
+    <main className="overflow-x-clip bg-background pt-20">
       <section className="relative flex h-[42vh] min-h-[280px] items-center justify-center overflow-hidden md:h-[56vh] md:min-h-[420px]">
         <Image
           src="/images/foy-the-great.png"
@@ -60,10 +60,10 @@ export default function AboutPage() {
           <h2 className="text-center font-heading text-[clamp(2.1rem,4.5vw,3.85rem)] text-ink">
             Where He Serves
           </h2>
-          <div className="mt-7 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-4 md:gap-5">
+          <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-10 lg:grid-cols-4 lg:gap-5">
             {advisoryCards.map(([org, role]) => (
-              <div key={org} className="clay-panel p-5 md:p-6">
-                <p className="font-heading text-2xl text-ink">{org}</p>
+              <div key={org} className="clay-panel min-w-0 p-5 md:p-6">
+                <p className="font-heading text-xl text-ink sm:text-2xl">{org}</p>
                 <p className="mt-3 font-body text-base uppercase tracking-[0.06em] text-teal">{role}</p>
               </div>
             ))}

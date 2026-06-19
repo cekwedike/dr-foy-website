@@ -23,7 +23,7 @@ export default function MovementSection() {
     prefersReducedMotion ? "visible" : isContentInView ? "visible" : "hidden";
 
   return (
-    <section className="relative h-[78vh] min-h-[520px] overflow-hidden">
+    <section className="relative min-h-[420px] overflow-hidden sm:min-h-[480px] md:min-h-[520px] lg:h-[78vh]">
       <div className="absolute inset-0">
         <Image
           src="/images/foy.jpg"

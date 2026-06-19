@@ -19,8 +19,8 @@ export default function AboutTeaserSection() {
   const imageY = useTransform(scrollYProgress, [0, 1], [0, -36]);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-background">
-      <div className="grid min-h-[auto] grid-cols-1 md:min-h-[88vh] md:grid-cols-2">
+    <section ref={sectionRef} className="relative overflow-x-clip overflow-y-hidden bg-background">
+      <div className="grid min-h-0 grid-cols-1 md:min-h-[88vh] md:grid-cols-2">
         <motion.div className="relative min-h-[52vh] md:min-h-[88vh]" style={{ y: imageY }}>
           <Image
             src="/images/foy-the-great.png"
@@ -40,7 +40,7 @@ export default function AboutTeaserSection() {
           />
         </motion.div>
 
-        <div className="relative bg-surface px-5 py-12 sm:px-7 md:px-14 md:py-16">
+        <div className="relative min-w-0 bg-surface px-5 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14 lg:px-14 lg:py-16">
           <motion.div
             className="relative z-10 mx-auto max-w-2xl"
             initial="hidden"

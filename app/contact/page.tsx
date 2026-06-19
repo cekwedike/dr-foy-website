@@ -7,9 +7,9 @@ import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 export default function ContactPage() {
   return (
-    <main className="bg-background pt-20">
-      <section className="grid min-h-[calc(100vh-80px)] grid-cols-1 md:grid-cols-2">
-        <div className="relative min-h-[280px] overflow-hidden bg-[var(--color-bg-deep)] md:min-h-[420px]">
+    <main className="overflow-x-clip bg-background pt-20">
+      <section className="grid min-h-[calc(100dvh-5rem)] grid-cols-1 lg:grid-cols-2">
+        <div className="relative min-h-[240px] overflow-hidden bg-[var(--color-bg-deep)] sm:min-h-[300px] lg:min-h-[420px]">
           <Image src="/images/foy.jpg" alt="" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.2),rgba(14,19,24,0.82))]" />
           <div className="absolute bottom-6 left-5 right-5 md:bottom-10 md:left-8 md:right-8">
@@ -20,7 +20,7 @@ export default function ContactPage() {
         </div>
 
         <motion.div
-          className="bg-surface px-6 py-9 md:px-12 md:py-14"
+          className="min-w-0 bg-surface px-5 py-8 sm:px-6 sm:py-9 md:px-10 md:py-12 lg:px-12 lg:py-14"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}

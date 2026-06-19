@@ -7,6 +7,14 @@ export default function InitialPreloader() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    if (process.env.NODE_ENV === "development" && "serviceWorker" in navigator) {
+      void navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => {
+          void registration.unregister();
+        });
+      });
+    }
+
     let done = false;
     // Fixed-duration preloader (requested): keeps the overlay up long enough
     // for critical images to stream in behind the scenes.

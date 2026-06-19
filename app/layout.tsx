@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans, Ephesis, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
@@ -29,6 +29,11 @@ const wordmarkScript = Ephesis({
   variable: "--font-wordmark"
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1
+};
+
 export const metadata: Metadata = {
   title: "Dr. Tochukwu Macfoy | Physician · Creative Strategist · Culture Builder",
   description:
@@ -40,11 +45,12 @@ export const metadata: Metadata = {
   ),
   icons: {
     icon: [
-      { url: "/images/favicon/favicon.ico" },
+      { url: "/favicon.ico" },
       { url: "/images/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/images/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" }
     ],
-    apple: [{ url: "/images/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }]
+    apple: [{ url: "/images/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/favicon.ico"]
   },
   manifest: "/images/favicon/site.webmanifest",
   openGraph: {
@@ -74,10 +80,10 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${spaceGrotesk.variable} ${dmSans.variable} ${wordmarkScript.variable}`}
     >
-      <body className="bg-background font-body text-ink antialiased">
+      <body className="overflow-x-clip bg-background font-body text-ink antialiased">
         <InitialPreloader />
         <Navbar />
-        {children}
+        <div className="site-shell">{children}</div>
         <Footer />
       </body>
     </html>

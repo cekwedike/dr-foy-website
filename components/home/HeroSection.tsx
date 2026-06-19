@@ -59,9 +59,9 @@ export default function HeroSection() {
 
     if (transitionVariant === 2) {
       return {
-        initial: { opacity: 0, x: 26, rotate: 0.25, filter: "blur(4px)" },
+        initial: { opacity: 0, x: 12, rotate: 0.15, filter: "blur(4px)" },
         animate: { opacity: 1, x: 0, rotate: 0, filter: "blur(0px)" },
-        exit: { opacity: 0, x: -18, rotate: -0.2, filter: "blur(3px)" },
+        exit: { opacity: 0, x: -8, rotate: -0.1, filter: "blur(3px)" },
         transition: { duration: 0.55, ease: "easeOut" }
       } as const;
     }
@@ -146,18 +146,18 @@ export default function HeroSection() {
         </motion.g>
       </svg>
 
-      <div className="relative z-10 flex h-full items-center justify-center px-5 text-center md:px-10">
-        <motion.div className="mx-auto max-w-6xl" variants={staggerContainer} initial="hidden" animate="visible">
+      <div className="relative z-10 flex h-full items-center justify-center px-4 text-center sm:px-5 md:px-10">
+        <motion.div className="mx-auto w-full max-w-6xl min-w-0" variants={staggerContainer} initial="hidden" animate="visible">
           <motion.p
             variants={fadeUpVariant}
-            className="mx-auto max-w-3xl font-display text-xs uppercase tracking-[0.34em] text-teal sm:text-sm"
+            className="mx-auto max-w-3xl text-balance font-display text-[0.62rem] uppercase tracking-[0.18em] text-teal sm:text-xs sm:tracking-[0.28em] md:text-sm md:tracking-[0.34em]"
           >
             {homeContent.eyebrow}
           </motion.p>
 
           <motion.h1
             variants={fadeUpVariant}
-            className="font-heading mt-5 text-[clamp(3rem,10vw,7.5rem)] font-light leading-[0.92] text-ink"
+            className="mt-4 overflow-hidden font-heading text-[clamp(2.4rem,10vw,7.5rem)] font-light leading-[0.92] text-ink sm:mt-5"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
@@ -175,7 +175,7 @@ export default function HeroSection() {
 
           <motion.p
             variants={fadeUpVariant}
-            className="mx-auto mt-6 max-w-3xl font-body text-lg text-ink/82 sm:text-xl md:text-2xl"
+            className="mx-auto mt-5 max-w-3xl text-pretty font-body text-base text-ink/82 sm:mt-6 sm:text-lg md:text-xl lg:text-2xl"
           >
             {homeContent.subtitle}
           </motion.p>

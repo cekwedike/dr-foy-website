@@ -32,12 +32,12 @@ const pressMentions = [
 
 export default function PressPage() {
   return (
-    <main className="bg-background pt-20">
-      <section className="flex min-h-[26vh] items-center justify-center px-6 text-center md:min-h-[40vh]">
-        <h1 className="font-heading text-[clamp(2.8rem,7vw,6rem)] text-ink">Press Room</h1>
+    <main className="overflow-x-clip bg-background pt-20">
+      <section className="flex min-h-[22vh] items-center justify-center px-5 text-center sm:min-h-[28vh] sm:px-6 md:min-h-[40vh]">
+        <h1 className="text-balance font-heading text-[clamp(2.4rem,7vw,6rem)] text-ink">Press Room</h1>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-12 md:px-10 md:pb-20">
+      <section className="page-container pb-12 md:pb-20">
         <p className="max-w-3xl font-body text-base leading-relaxed text-ink/78 md:text-lg">
           Dr. Foy has been featured in Nigeria&apos;s leading business and culture press. Here&apos;s what
           they&apos;ve said.
@@ -48,7 +48,7 @@ export default function PressPage() {
         {pressMentions.map((item, index) => (
           <article
             key={item.publication}
-            className="grid grid-cols-1 gap-3 py-6 md:grid-cols-[220px_1fr] md:gap-8 md:py-8"
+            className="grid min-w-0 grid-cols-1 gap-3 py-6 sm:gap-4 md:grid-cols-[minmax(0,11rem)_1fr] md:gap-8 md:py-8 lg:grid-cols-[minmax(0,13rem)_1fr]"
           >
             <p className="font-body text-sm uppercase tracking-[0.18em] text-teal">{item.publication}</p>
             <div>

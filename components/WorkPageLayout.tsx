@@ -25,7 +25,7 @@ export default function WorkPageLayout({
   heroTitle
 }: WorkPageLayoutProps) {
   return (
-    <main className="bg-background pt-20">
+    <main className="overflow-x-clip bg-background pt-20">
       <section className="relative flex h-[44vh] min-h-[280px] w-full items-center justify-center overflow-hidden md:h-[64vh] md:min-h-[440px]">
         <Image
           src={heroImage}
@@ -70,7 +70,7 @@ export default function WorkPageLayout({
       <section className="bg-surface px-5 py-10 md:px-10 md:py-20">
         <div className="mx-auto max-w-5xl">
           <div className="h-px w-full bg-teal/30" />
-          <article className="py-8 text-left font-body text-base leading-[1.72] text-ink/86 sm:text-xl md:py-12 md:text-2xl md:leading-[1.85]">
+          <article className="min-w-0 py-8 text-left font-body text-base leading-[1.72] text-ink/86 sm:text-lg md:py-12 md:text-xl md:leading-[1.85] lg:text-2xl">
             {body}
           </article>
           <div className="h-px w-full bg-teal/30" />

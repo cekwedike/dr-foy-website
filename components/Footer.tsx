@@ -19,8 +19,8 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-teal/25 bg-background px-6 py-9 md:px-10 md:py-12">
-      <div className="mx-auto max-w-7xl">
+    <footer className="overflow-x-clip border-t border-teal/25 bg-background px-5 py-9 sm:px-6 md:px-10 md:py-12">
+      <div className="page-container">
         <div className="grid grid-cols-1 items-start gap-9 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-4">
             <BrandWordmark className="text-[clamp(1.2rem,4vw,1.95rem)] text-coral" />
@@ -29,7 +29,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 md:col-span-8 md:grid-cols-3 md:gap-10">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3 lg:gap-10">
             <div className="w-full md:max-w-[14rem]">
               <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Quick Links</h4>
               <nav className="mt-3 flex flex-col gap-2">
@@ -66,7 +66,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="hidden md:block md:max-w-[16rem]">
+            <div className="hidden w-full lg:block lg:max-w-[16rem]">
               <h4 className="font-body text-xs uppercase tracking-[0.22em] text-teal/90">Get in touch</h4>
               <Link
                 href="/contact"
@@ -79,11 +79,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-9 h-px w-full bg-ink/10 md:mt-10" />
-        <div className="mt-4 flex flex-col gap-2 text-sm text-muted md:mt-5 md:flex-row md:items-center md:justify-between">
+        <div className="mt-4 flex flex-col gap-2 text-sm text-muted sm:flex-row sm:items-center sm:justify-between md:mt-5">
           <p className="font-body">
             © {new Date().getFullYear()} Dr. Tochukwu Macfoy. All rights reserved.
           </p>
-          <p className="font-body text-ink/50">Vercel deployment.</p>
         </div>
       </div>
     </footer>

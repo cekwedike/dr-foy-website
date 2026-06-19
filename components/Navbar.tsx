@@ -54,6 +54,15 @@ export default function Navbar() {
   const [mobileWorkOpen, setMobileWorkOpen] = useState(false);
 
   useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -75,16 +84,16 @@ export default function Navbar() {
       }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
-      <div className="flex w-full items-center justify-between px-6 py-4 md:px-12 md:py-6">
+      <div className="mx-auto flex w-full items-center justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4 2xl:px-12 2xl:py-6">
         <Link
           href="/"
           aria-label="Dr Tochukwu MacFoy home"
-          className="max-w-[min(56vw,14rem)] sm:max-w-none"
+          className="min-w-0 max-w-[min(48vw,11rem)] shrink sm:max-w-[min(40vw,13rem)] 2xl:max-w-[18rem]"
         >
-          <BrandWordmark className="block text-[clamp(0.78rem,2.5vw,1.2rem)] text-coral" />
+          <BrandWordmark className="block leading-none text-[clamp(0.68rem,2vw,1.2rem)] text-coral" />
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden min-w-0 flex-1 items-center justify-end gap-4 2xl:flex 2xl:gap-6">
           {navLinks.slice(0, 2).map((item) => (
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
@@ -97,14 +106,15 @@ export default function Navbar() {
             <button
               type="button"
               aria-expanded={desktopWorkOpen}
-              aria-label="Open work menu"
-              className="text-sm uppercase tracking-[0.18em]"
+              aria-label="Open Energize Central menu"
+              className="shrink-0 whitespace-nowrap text-xs uppercase tracking-[0.12em] 2xl:text-sm 2xl:tracking-[0.18em]"
               style={{
                 color: PALETTE.ink,
                 fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
               }}
             >
-              ENERGIZE CENTRAL ▾
+              <span className="2xl:hidden">ENERGIZE ▾</span>
+              <span className="hidden 2xl:inline">ENERGIZE CENTRAL ▾</span>
             </button>
 
             <AnimatePresence>
@@ -150,16 +160,17 @@ export default function Navbar() {
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
 
-          <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="neu-outline rounded-full">
+          <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="neu-outline shrink-0 rounded-full">
             <Link
               href="/contact"
-              className="rounded-full px-6 py-2.5 text-sm uppercase tracking-[0.16em] transition-colors duration-200 hover:text-teal"
+              className="inline-flex shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:text-teal 2xl:px-6 2xl:py-2.5 2xl:text-sm 2xl:tracking-[0.16em]"
               style={{
                 color: PALETTE.ink,
                 fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
               }}
             >
-              Book Dr. Foy
+              <span className="2xl:hidden">Book</span>
+              <span className="hidden 2xl:inline">Book Dr. Foy</span>
             </Link>
           </motion.div>
         </div>
@@ -167,7 +178,7 @@ export default function Navbar() {
         <button
           type="button"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          className="md:hidden"
+          className="shrink-0 2xl:hidden"
           style={{ color: PALETTE.ink }}
           onClick={() => setMobileMenuOpen(true)}
         >
@@ -178,7 +189,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen ? (
           <motion.aside
-            className="fixed inset-0 z-[60] md:hidden"
+            className="fixed inset-0 z-[60] 2xl:hidden"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -304,7 +315,7 @@ function DesktopLink({ href, label }: LinkProps) {
   return (
     <Link
       href={href}
-      className="text-sm uppercase tracking-[0.18em] transition-colors duration-200 hover:text-teal"
+      className="shrink-0 whitespace-nowrap text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:text-teal 2xl:text-sm 2xl:tracking-[0.18em]"
       style={{
         color: PALETTE.ink,
         fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
