@@ -215,7 +215,7 @@ function MobileHorizontalCarousel() {
   }, []);
 
   return (
-    <section className="relative h-[100svh] w-full overflow-hidden bg-[var(--color-bg-deep)]">
+    <section className="relative isolate h-[100svh] w-full overflow-hidden border-t border-teal/15 bg-[var(--color-bg-deep)]">
       <SectionHeader hint="Swipe →" />
 
       <div

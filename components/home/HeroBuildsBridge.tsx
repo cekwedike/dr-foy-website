@@ -13,7 +13,7 @@ export default function HeroBuildsBridge() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-20 overflow-hidden bg-[var(--color-bg-deep)]"
+      className="relative isolate overflow-hidden bg-[var(--color-bg-deep)]"
       aria-labelledby="hero-builds-bridge-heading"
     >
       <svg
@@ -54,7 +54,7 @@ export default function HeroBuildsBridge() {
       <div className="pointer-events-none absolute left-4 top-7 hidden h-9 w-9 border-l border-t border-teal/35 sm:block md:left-10 md:top-9 md:h-11 md:w-11" />
       <div className="pointer-events-none absolute bottom-4 right-4 hidden h-9 w-9 border-b border-r border-coral/30 sm:block md:right-10 md:bottom-6 md:h-11 md:w-11" />
 
-      <div className="page-container relative pb-8 pt-11 sm:pb-10 sm:pt-14 md:pb-12 md:pt-16">
+      <div className="page-container relative pb-6 pt-11 sm:pb-8 sm:pt-14 md:pb-10 md:pt-16">
         <motion.div
           className="mx-auto flex max-w-3xl flex-col items-center px-1 text-center"
           initial={prefersReducedMotion ? "visible" : "hidden"}
@@ -84,21 +84,6 @@ export default function HeroBuildsBridge() {
             Medicine trained the discipline.
             <span className="mt-0.5 block accent-gradient-text sm:mt-1">Culture demanded the build.</span>
           </motion.h2>
-
-          <motion.p
-            variants={fadeUpVariant}
-            className="mt-3 max-w-md text-pretty font-body text-[0.82rem] leading-relaxed text-muted sm:mt-4 sm:max-w-lg sm:text-sm md:text-base"
-          >
-            Four chapters of work — one ecosystem.
-          </motion.p>
-
-          <motion.div variants={fadeUpVariant} className="mt-5 flex items-center gap-2.5 sm:mt-6">
-            <span className="h-1 w-1 rounded-full bg-teal/70 sm:h-1.5 sm:w-1.5" />
-            <span className="kinetic-line h-8 w-px bg-gradient-to-b from-teal/80 via-teal/35 to-transparent sm:h-10" />
-            <span className="font-display text-[8px] uppercase tracking-[0.24em] text-ink/50 sm:text-[9px] sm:tracking-[0.28em]">
-              Enter
-            </span>
-          </motion.div>
         </motion.div>
       </div>
 
