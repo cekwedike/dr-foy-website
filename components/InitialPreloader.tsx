@@ -151,8 +151,8 @@ export default function InitialPreloader() {
 
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(14,19,24,0.25)_40%,rgba(14,19,24,0.96)_100%)]" />
 
-        <motion.p
-          className="absolute left-6 top-6 font-display text-[10px] uppercase tracking-[0.38em] text-teal/55 md:left-10 md:top-10 md:text-[11px]"
+        <motion.div
+          className="absolute left-5 top-5 md:left-10 md:top-10"
           {...(prefersReducedMotion
             ? {}
             : {
@@ -161,15 +161,17 @@ export default function InitialPreloader() {
                 transition: { duration: 0.65, ease: enterEase }
               })}
         >
-          Physician · Strategist · Builder
-        </motion.p>
+          <div className="h-12 w-12 border-l border-t border-teal/40 md:h-16 md:w-16" />
+          <p className="mt-2.5 max-w-[9.5rem] font-display text-[9px] uppercase leading-relaxed tracking-[0.28em] text-teal/55 md:mt-3 md:max-w-[12rem] md:text-[10px] md:tracking-[0.34em]">
+            Physician · Strategist · Builder
+          </p>
+        </motion.div>
 
-        {["tl", "tr", "bl", "br"].map((corner) => (
+        {["tr", "bl", "br"].map((corner) => (
           <motion.div
             key={corner}
             className={[
-              "absolute h-14 w-14 md:h-20 md:w-20",
-              corner === "tl" ? "left-5 top-5 border-l border-t border-teal/40 md:left-10 md:top-10" : "",
+              "absolute h-12 w-12 md:h-16 md:w-16",
               corner === "tr" ? "right-5 top-5 border-r border-t border-teal/40 md:right-10 md:top-10" : "",
               corner === "bl" ? "bottom-5 left-5 border-b border-l border-coral/35 md:bottom-10 md:left-10" : "",
               corner === "br" ? "bottom-5 right-5 border-b border-r border-coral/35 md:bottom-10 md:right-10" : ""
