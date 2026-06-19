@@ -195,6 +195,14 @@ body::after {
   scroll-snap-type: none;
 }
 
+.perspective-\[1400px\] {
+  perspective: 1400px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
 @keyframes ambientDrift {
   0% {
     background-position: 0% 40%, 100% 60%, 50% 50%;

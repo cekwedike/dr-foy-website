@@ -120,14 +120,11 @@ export default function Navbar() {
             <AnimatePresence>
               {desktopWorkOpen ? (
                 <motion.div
-                  initial={{ y: -10, opacity: 0 }}
+                  initial={{ y: -6, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -10, opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="clay-panel absolute right-0 mt-5 w-72 border-l-2 border-teal px-5 py-4"
-                  style={{
-                    backgroundColor: PALETTE.surface
-                  }}
+                  exit={{ y: -6, opacity: 0 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                  className="absolute right-0 mt-3 w-72 border border-teal/20 bg-surface/95 px-5 py-4 backdrop-blur-sm"
                 >
                   <div className="flex flex-col gap-3">
                     {workLinks.map((item) => (
@@ -160,19 +157,17 @@ export default function Navbar() {
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
 
-          <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="neu-outline shrink-0 rounded-full">
-            <Link
-              href="/contact"
-              className="inline-flex shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:text-teal 2xl:px-6 2xl:py-2.5 2xl:text-sm 2xl:tracking-[0.16em]"
-              style={{
-                color: PALETTE.ink,
-                fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-              }}
-            >
-              <span className="2xl:hidden">Book</span>
-              <span className="hidden 2xl:inline">Book Dr. Foy</span>
-            </Link>
-          </motion.div>
+          <Link
+            href="/contact"
+            className="inline-flex shrink-0 whitespace-nowrap border border-ink/30 px-4 py-2 text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:border-teal hover:text-teal 2xl:px-5 2xl:py-2.5 2xl:text-sm 2xl:tracking-[0.16em]"
+            style={{
+              color: PALETTE.ink,
+              fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
+            }}
+          >
+            <span className="2xl:hidden">Book</span>
+            <span className="hidden 2xl:inline">Book Dr. Foy</span>
+          </Link>
         </div>
 
         <button
@@ -284,18 +279,16 @@ export default function Navbar() {
                 </motion.div>
 
                 <motion.div variants={mobileItem} className="pt-4">
-                  <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="inline-flex neu-outline rounded-full">
-                    <Link
-                      href="/contact"
-                      onClick={closeMobileMenu}
-                      className="inline-flex px-6 py-2.5 text-sm uppercase tracking-[0.16em] text-ink hover:text-teal"
-                      style={{
-                        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-                      }}
-                    >
-                      Book Dr. Foy
-                    </Link>
-                  </motion.div>
+                  <Link
+                    href="/contact"
+                    onClick={closeMobileMenu}
+                    className="inline-flex border border-ink/30 px-6 py-2.5 text-sm uppercase tracking-[0.16em] text-ink transition-colors hover:border-teal hover:text-teal"
+                    style={{
+                      fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
+                    }}
+                  >
+                    Book Dr. Foy
+                  </Link>
                 </motion.div>
               </motion.div>
             </div>

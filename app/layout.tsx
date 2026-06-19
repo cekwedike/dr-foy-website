@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import InitialPreloader from "@/components/InitialPreloader";
 import Navbar from "@/components/Navbar";
+import ClientProviders from "@/components/providers/ClientProviders";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -81,10 +82,12 @@ export default function RootLayout({
       className={`${cormorant.variable} ${spaceGrotesk.variable} ${dmSans.variable} ${wordmarkScript.variable}`}
     >
       <body className="overflow-x-clip bg-background font-body text-ink antialiased">
-        <InitialPreloader />
-        <Navbar />
-        <div className="site-shell">{children}</div>
-        <Footer />
+        <ClientProviders>
+          <InitialPreloader />
+          <Navbar />
+          <div className="site-shell relative z-[1]">{children}</div>
+          <Footer />
+        </ClientProviders>
       </body>
     </html>
   );
