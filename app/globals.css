@@ -455,6 +455,18 @@ body::after {
   letter-spacing: 0.14em;
 }
 
+.nav-reveal-btn--nav {
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 1280px) {
+  .nav-reveal-btn--nav {
+    font-size: 0.8125rem;
+    letter-spacing: 0.14em;
+  }
+}
+
 .nav-reveal-btn--form {
   font-size: 0.8125rem;
   letter-spacing: 0.14em;

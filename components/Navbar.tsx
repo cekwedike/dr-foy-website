@@ -158,7 +158,7 @@ export default function Navbar() {
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
 
-          <NavRevealButton href="/contact" label="Book Dr. Foy" compactLabel="Book" className="shrink-0" />
+          <NavRevealButton href="/contact" label="Book Dr. Foy" className="nav-reveal-btn--nav shrink-0" />
         </div>
 
         <button

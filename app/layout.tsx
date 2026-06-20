@@ -6,6 +6,7 @@ import InitialPreloader from "@/components/InitialPreloader";
 import Navbar from "@/components/Navbar";
 import ClientProviders from "@/components/providers/ClientProviders";
 import { siteBuildCreditMeta } from "@/app/data/siteCredits";
+import { createPageMetadata, getSiteUrl, SITE_NAME } from "@/app/lib/site-metadata";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -38,13 +39,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Dr. Tochukwu Macfoy | Physician · Creative Strategist · Culture Builder",
-  description:
-    "Official portfolio of Dr. Tochukwu Macfoy, physician and creative strategist leading Energize Central across media, music, and live culture.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ??
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
-  ),
+  metadataBase: new URL(getSiteUrl()),
+  applicationName: SITE_NAME,
+  ...createPageMetadata("home"),
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -53,21 +50,6 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/images/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"]
-  },
-  openGraph: {
-    type: "website",
-    url: "/",
-    title: "Dr. Tochukwu Macfoy",
-    description:
-      "Physician and creative strategist leading Energize Central across media, music, and live culture.",
-    images: [{ url: "/images/hero-section.jpg", width: 1200, height: 630, alt: "Dr. Tochukwu Macfoy" }]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Dr. Tochukwu Macfoy",
-    description:
-      "Physician and creative strategist leading Energize Central across media, music, and live culture.",
-    images: [{ url: "/images/hero-section.jpg", alt: "Dr. Tochukwu Macfoy" }]
   },
   other: siteBuildCreditMeta
 };
