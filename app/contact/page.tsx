@@ -2,10 +2,49 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useCallback, useMemo, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import HeroPatternOverlay from "@/components/home/HeroPatternOverlay";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
+
+const SLIDE_EASE = [0.32, 0.72, 0, 1] as const;
+const SLIDE_DURATION = 0.72;
+
+function usePortraitDimensions() {
+  const [dimensions, setDimensions] = useState(() => {
+    if (typeof window === "undefined") {
+      return { width: 380, mobileHeight: 320, minMd: false, minLg: false };
+    }
+
+    const minMd = window.matchMedia("(min-width: 768px)").matches;
+    const minLg = window.matchMedia("(min-width: 1024px)").matches;
+    return {
+      minMd,
+      minLg,
+      width: Math.min(Math.max(window.innerWidth * 0.38, 280), 520),
+      mobileHeight: Math.min(Math.max(window.innerHeight * 0.42, 240), 400)
+    };
+  });
+
+  useEffect(() => {
+    const update = () => {
+      const minMd = window.matchMedia("(min-width: 768px)").matches;
+      const minLg = window.matchMedia("(min-width: 1024px)").matches;
+      setDimensions({
+        minMd,
+        minLg,
+        width: Math.min(Math.max(window.innerWidth * 0.38, 280), 520),
+        mobileHeight: Math.min(Math.max(window.innerHeight * 0.42, 240), 400)
+      });
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return dimensions;
+}
 
 const inquiryTypes = [
   {
@@ -122,40 +161,217 @@ function SubmitRevealButton() {
   );
 }
 
-function PortraitPanel({ collapsed }: { collapsed: boolean }) {
+function PortraitPanel() {
   return (
-    <div className="relative h-full min-h-[220px] w-full overflow-hidden bg-[var(--color-bg-deep)] sm:min-h-[280px] md:min-h-0">
+    <div className="relative h-full w-full overflow-hidden bg-[var(--color-bg-deep)]">
       <Image
         src="/images/foy.jpg"
         alt=""
         fill
         priority
-        sizes="(max-width: 768px) 100vw, 42vw"
+        sizes="(max-width: 767px) 100vw, (max-width: 1280px) 42vw, 520px"
         className="object-cover object-[50%_18%] md:object-[50%_12%]"
       />
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.15),rgba(14,19,24,0.72)_55%,rgba(14,19,24,0.94))]" />
       <HeroPatternOverlay />
 
-      <motion.div
-        className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 md:p-8 lg:p-10"
-        animate={{ opacity: collapsed ? 0 : 1, y: collapsed ? 16 : 0 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 md:p-7 lg:p-10 xl:p-12">
         <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-xs sm:tracking-[0.34em]">
           Bookings & inquiries
         </p>
-        <h1 className="mt-2 font-heading text-[clamp(2rem,5vw,3.75rem)] leading-[0.92] text-ink sm:mt-3">
+        <h1 className="mt-2 font-heading text-[clamp(1.75rem,4.5vw,3.75rem)] leading-[0.92] text-ink sm:mt-3">
           Let&apos;s build
           <span className="block">something that</span>
           <span className="accent-gradient-text">lasts.</span>
         </h1>
-      </motion.div>
+      </div>
+    </div>
+  );
+}
+
+type InquiryId = (typeof inquiryTypes)[number]["id"];
+
+function InquiryLaneList({
+  inquiry,
+  onSelect
+}: {
+  inquiry: InquiryId;
+  onSelect: (id: InquiryId) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      {inquiryTypes.map((item, index) => {
+        const active = inquiry === item.id;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onSelect(item.id)}
+            aria-pressed={active}
+            className={[
+              "group grid w-full grid-cols-[2.25rem_1fr] items-start gap-x-3 border px-3 py-4 text-left transition-colors duration-200 sm:grid-cols-[2.75rem_1fr] sm:gap-x-4 sm:px-4 sm:py-5",
+              active
+                ? "border-teal/45 bg-teal/[0.06]"
+                : "border-teal/12 bg-transparent hover:border-teal/28 hover:bg-teal/[0.03]"
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "font-display text-[11px] uppercase tracking-[0.2em] transition-colors sm:text-xs",
+                active ? "text-teal" : "text-ink/35 group-hover:text-ink/55"
+              ].join(" ")}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="min-w-0">
+              <span
+                className={[
+                  "block font-heading text-[clamp(1.05rem,2.5vw,1.35rem)] leading-tight transition-colors",
+                  active ? "text-ink" : "text-ink/88 group-hover:text-ink"
+                ].join(" ")}
+              >
+                {item.label}
+              </span>
+              <span className="mt-1 block font-body text-sm leading-snug text-ink/55">{item.detail}</span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function InquiryLaneSection({
+  inquiry,
+  onSelect,
+  collapsible
+}: {
+  inquiry: InquiryId;
+  onSelect: (id: InquiryId) => void;
+  collapsible: boolean;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+  const [lanesOpen, setLanesOpen] = useState(false);
+  const activeLane = inquiryTypes.find((item) => item.id === inquiry);
+
+  const handleSelect = (id: InquiryId) => {
+    onSelect(id);
+    if (collapsible) {
+      setLanesOpen(false);
+    }
+  };
+
+  if (!collapsible) {
+    return (
+      <div>
+        <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
+          What brings you here
+        </p>
+        <div className="mt-3 h-px w-16 bg-teal/30 sm:mt-4" />
+        <h2 className="mt-5 font-heading text-[clamp(1.75rem,4vw,2.75rem)] leading-[0.95] text-ink sm:mt-6">
+          Choose your lane.
+        </h2>
+        <p className="mt-4 max-w-sm font-body text-[0.95rem] leading-relaxed text-ink/75 sm:text-base">
+          Select an inquiry type, then send a note. Every message is read — expect a thoughtful reply,
+          not an autoresponder.
+        </p>
+        <div className="mt-8 sm:mt-10">
+          <InquiryLaneList inquiry={inquiry} onSelect={handleSelect} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-hidden border border-teal/18 bg-[var(--color-bg-deep)]/40">
+      <button
+        type="button"
+        className="flex w-full items-start justify-between gap-4 p-4 text-left sm:p-5"
+        aria-expanded={lanesOpen}
+        aria-controls="contact-lane-list"
+        onClick={() => setLanesOpen((prev) => !prev)}
+      >
+        <span className="min-w-0">
+          <span className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
+            What brings you here
+          </span>
+          <span className="mt-2 block font-heading text-[clamp(1.35rem,4vw,1.85rem)] leading-tight text-ink">
+            Choose your lane.
+          </span>
+          {!lanesOpen ? (
+            <span className="mt-2 block font-body text-sm text-teal sm:text-base">{activeLane?.label}</span>
+          ) : null}
+        </span>
+        <span
+          aria-hidden
+          className="mt-1 shrink-0 font-display text-lg leading-none text-teal/80"
+        >
+          {lanesOpen ? "−" : "+"}
+        </span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {lanesOpen ? (
+          <motion.div
+            id="contact-lane-list"
+            initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden border-t border-teal/12"
+          >
+            <div className="space-y-2 p-4 pt-3 sm:p-5 sm:pt-4">
+              <p className="pb-1 font-body text-sm leading-relaxed text-ink/65">
+                Pick the lane that best matches your inquiry.
+              </p>
+              <InquiryLaneList inquiry={inquiry} onSelect={handleSelect} />
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function ElsewhereSection() {
+  return (
+    <div className="border-t border-teal/15 pt-8 lg:border-t-0 lg:pt-0">
+      <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal/90 sm:text-[11px]">
+        Elsewhere
+      </p>
+      <ul className="mt-4 space-y-3">
+        {socialLinks.map((item) => (
+          <li key={item.href}>
+            <Link
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex flex-wrap items-baseline gap-x-2 gap-y-0.5"
+            >
+              <span className="font-display text-[10px] uppercase tracking-[0.2em] text-ink/45 transition-colors group-hover:text-teal sm:text-[11px]">
+                {item.label}
+              </span>
+              <span className="font-body text-base text-ink transition-colors group-hover:text-teal md:text-lg">
+                {item.handle}
+              </span>
+              <span
+                aria-hidden
+                className="text-teal/70 transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                ↗
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export default function ContactPage() {
   const prefersReducedMotion = useReducedMotion();
+  const { width: portraitWidth, mobileHeight: mobilePortraitHeight, minMd, minLg } =
+    usePortraitDimensions();
   const [inquiry, setInquiry] = useState<(typeof inquiryTypes)[number]["id"]>("speaking");
   const [formFocused, setFormFocused] = useState(false);
   const [formValues, setFormValues] = useState<FormValues>({
@@ -170,6 +386,20 @@ export default function ContactPage() {
       Boolean(formValues.name.trim() || formValues.email.trim() || formValues.message.trim()),
     [formFocused, formValues]
   );
+
+  const slideTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: SLIDE_DURATION, ease: SLIDE_EASE };
+
+  const portraitFrame = minMd
+    ? {
+        width: portraitCollapsed ? 0 : portraitWidth,
+        height: "calc(100dvh - 5rem)"
+      }
+    : {
+        width: "100%",
+        height: portraitCollapsed ? 0 : mobilePortraitHeight
+      };
 
   const handleFieldFocus = useCallback(() => setFormFocused(true), []);
 
@@ -195,20 +425,30 @@ export default function ContactPage() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_0%_0%,rgba(45,191,177,0.07),transparent_55%)]"
         />
 
-        <div
-          className={["contact-split", portraitCollapsed ? "contact-split--engaged" : ""]
-            .filter(Boolean)
-            .join(" ")}
-        >
-          <aside
-            className="contact-split__portrait relative border-b border-teal/15 md:border-b-0"
-            aria-hidden={portraitCollapsed}
-          >
-            <PortraitPanel collapsed={portraitCollapsed} />
-          </aside>
+        <LayoutGroup id="contact-layout">
+          <div className="flex min-h-0 flex-col md:min-h-[calc(100dvh-5rem)] md:flex-row">
+            <motion.aside
+              initial={false}
+              animate={portraitFrame}
+              transition={slideTransition}
+              className="relative shrink-0 overflow-hidden border-b border-teal/15 md:sticky md:top-20 md:self-start md:border-b-0 md:border-r md:border-teal/15"
+              aria-hidden={portraitCollapsed}
+              style={{ pointerEvents: portraitCollapsed ? "none" : "auto" }}
+            >
+              <div
+                className="h-full"
+                style={
+                  minMd
+                    ? { width: portraitWidth, minWidth: portraitWidth }
+                    : { width: "100%", height: mobilePortraitHeight }
+                }
+              >
+                <PortraitPanel />
+              </div>
+            </motion.aside>
 
-          <div className="contact-split__content">
-            <div className="page-container py-8 sm:py-10 md:py-12 lg:py-16">
+            <motion.div layout className="min-w-0 flex-1" transition={slideTransition}>
+              <div className="page-container py-6 sm:py-8 md:py-10 lg:py-14 xl:py-16">
               <AnimatePresence>
                 {portraitCollapsed ? (
                   <motion.div
@@ -230,100 +470,24 @@ export default function ContactPage() {
               </AnimatePresence>
 
               <motion.div
-                className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14"
+                className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-12 lg:grid-rows-[auto_auto] lg:gap-x-12 lg:gap-y-10 xl:gap-x-14"
                 initial="hidden"
                 animate="visible"
                 variants={staggerContainer}
               >
-                <motion.aside variants={fadeUpVariant} className="lg:col-span-5">
-                  <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
-                    What brings you here
-                  </p>
-                  <div className="mt-3 h-px w-16 bg-teal/30 sm:mt-4" />
-                  <h2 className="mt-5 font-heading text-[clamp(1.75rem,4vw,2.75rem)] leading-[0.95] text-ink sm:mt-6">
-                    Choose your lane.
-                  </h2>
-                  <p className="mt-4 max-w-sm font-body text-[0.95rem] leading-relaxed text-ink/75 sm:text-base">
-                    Select an inquiry type, then send a note. Every message is read — expect a
-                    thoughtful reply, not an autoresponder.
-                  </p>
+                <motion.div variants={fadeUpVariant} className="lg:col-span-5 lg:row-start-1 xl:col-span-4">
+                  <InquiryLaneSection
+                    inquiry={inquiry}
+                    onSelect={setInquiry}
+                    collapsible={!minLg}
+                  />
+                </motion.div>
 
-                  <div className="mt-8 space-y-2 sm:mt-10">
-                    {inquiryTypes.map((item, index) => {
-                      const active = inquiry === item.id;
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => setInquiry(item.id)}
-                          aria-pressed={active}
-                          className={[
-                            "group grid w-full grid-cols-[2.25rem_1fr] items-start gap-x-3 border px-3 py-4 text-left transition-colors duration-200 sm:grid-cols-[2.75rem_1fr] sm:gap-x-4 sm:px-4 sm:py-5",
-                            active
-                              ? "border-teal/45 bg-teal/[0.06]"
-                              : "border-teal/12 bg-transparent hover:border-teal/28 hover:bg-teal/[0.03]"
-                          ].join(" ")}
-                        >
-                          <span
-                            className={[
-                              "font-display text-[11px] uppercase tracking-[0.2em] transition-colors sm:text-xs",
-                              active ? "text-teal" : "text-ink/35 group-hover:text-ink/55"
-                            ].join(" ")}
-                          >
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className="min-w-0">
-                            <span
-                              className={[
-                                "block font-heading text-[clamp(1.05rem,2.5vw,1.35rem)] leading-tight transition-colors",
-                                active ? "text-ink" : "text-ink/88 group-hover:text-ink"
-                              ].join(" ")}
-                            >
-                              {item.label}
-                            </span>
-                            <span className="mt-1 block font-body text-sm leading-snug text-ink/55">
-                              {item.detail}
-                            </span>
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="mt-10 border-t border-teal/15 pt-8 sm:mt-12">
-                    <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal/90 sm:text-[11px]">
-                      Elsewhere
-                    </p>
-                    <ul className="mt-4 space-y-3">
-                      {socialLinks.map((item) => (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group inline-flex flex-wrap items-baseline gap-x-2 gap-y-0.5"
-                          >
-                            <span className="font-display text-[10px] uppercase tracking-[0.2em] text-ink/45 transition-colors group-hover:text-teal sm:text-[11px]">
-                              {item.label}
-                            </span>
-                            <span className="font-body text-base text-ink transition-colors group-hover:text-teal md:text-lg">
-                              {item.handle}
-                            </span>
-                            <span
-                              aria-hidden
-                              className="text-teal/70 transition-transform duration-200 group-hover:translate-x-0.5"
-                            >
-                              ↗
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.aside>
-
-                <motion.div variants={fadeUpVariant} className="lg:col-span-7">
-                  <div className="relative border border-teal/18 bg-[var(--color-bg-deep)]/60 p-6 backdrop-blur-sm sm:p-8 md:p-10">
+                <motion.div
+                  variants={fadeUpVariant}
+                  className="lg:col-span-7 lg:row-span-2 lg:row-start-1 lg:col-start-6 xl:col-span-8 xl:col-start-5"
+                >
+                  <div className="relative border border-teal/18 bg-[var(--color-bg-deep)]/60 p-5 backdrop-blur-sm sm:p-6 md:p-8 lg:p-10">
                     <div
                       aria-hidden
                       className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-teal/50 to-transparent"
@@ -383,18 +547,23 @@ export default function ContactPage() {
 
                       <div className="flex flex-col gap-5 border-t border-teal/12 pt-7 sm:flex-row sm:items-center sm:justify-between sm:pt-8">
                         <p className="max-w-xs font-body text-xs leading-relaxed text-ink/50 sm:text-sm">
-                          By submitting, you agree to be contacted about your inquiry. No mailing
-                          lists, no noise.
+                          By submitting, you agree to be contacted about your inquiry. No mailing lists,
+                          no noise.
                         </p>
                         <SubmitRevealButton />
                       </div>
                     </form>
                   </div>
                 </motion.div>
+
+                <motion.div variants={fadeUpVariant} className="lg:col-span-5 lg:row-start-2 xl:col-span-4">
+                  <ElsewhereSection />
+                </motion.div>
               </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
+        </LayoutGroup>
       </section>
 
       <section className="border-t border-teal/15 bg-background">

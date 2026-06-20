@@ -489,69 +489,6 @@ body::after {
   }
 }
 
-/* Contact — portrait column collapse on form focus */
-.contact-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  transition: grid-template-columns 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.contact-split__portrait {
-  overflow: hidden;
-  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.contact-split__content {
-  min-width: 0;
-}
-
-@media (max-width: 767px) {
-  .contact-split__portrait {
-    max-height: 42vh;
-    transition:
-      opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .contact-split--engaged .contact-split__portrait {
-    max-height: 0;
-    opacity: 0;
-    pointer-events: none;
-    border: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .contact-split {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    min-height: calc(100dvh - 5rem);
-  }
-
-  .contact-split__portrait {
-    position: sticky;
-    top: 5rem;
-    height: calc(100dvh - 5rem);
-    border-right: 1px solid rgba(45, 191, 177, 0.15);
-  }
-
-  .contact-split--engaged {
-    grid-template-columns: 0fr minmax(0, 1fr);
-  }
-
-  .contact-split--engaged .contact-split__portrait {
-    opacity: 0;
-    pointer-events: none;
-    border: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contact-split,
-  .contact-split__portrait {
-    transition: none;
-  }
-}
-
 /* Scroll snap disabled: combined with Lenis it caused blank viewport bands on long pages. */
 .home-snap-wrapper {
   scroll-snap-type: none;
