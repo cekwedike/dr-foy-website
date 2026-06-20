@@ -2,6 +2,7 @@
   "name": "drfoy-website",
   "version": "0.1.0",
   "private": true,
+  "author": "Chidiebere Ekwedike (Siryus Creative Media Ltd)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

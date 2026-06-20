@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import InitialPreloader from "@/components/InitialPreloader";
 import Navbar from "@/components/Navbar";
 import ClientProviders from "@/components/providers/ClientProviders";
+import { siteBuildCreditMeta } from "@/app/data/siteCredits";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -67,7 +68,8 @@ export const metadata: Metadata = {
     description:
       "Physician and creative strategist leading Energize Central across media, music, and live culture.",
     images: [{ url: "/images/hero-section.jpg", alt: "Dr. Tochukwu Macfoy" }]
-  }
+  },
+  other: siteBuildCreditMeta
 };
 
 export default function RootLayout({
