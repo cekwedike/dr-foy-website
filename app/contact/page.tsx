@@ -5,34 +5,31 @@ import Link from "next/link";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import HeroPatternOverlay from "@/components/home/HeroPatternOverlay";
+import RevealButton from "@/components/RevealButton";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 const SLIDE_EASE = [0.32, 0.72, 0, 1] as const;
 const SLIDE_DURATION = 0.72;
 
-function usePortraitDimensions() {
-  const [dimensions, setDimensions] = useState(() => {
-    if (typeof window === "undefined") {
-      return { width: 380, mobileHeight: 320, minMd: false, minLg: false };
-    }
+type PortraitDimensions = {
+  width: number;
+  mobileHeight: number;
+  minMd: boolean;
+};
 
-    const minMd = window.matchMedia("(min-width: 768px)").matches;
-    const minLg = window.matchMedia("(min-width: 1024px)").matches;
-    return {
-      minMd,
-      minLg,
-      width: Math.min(Math.max(window.innerWidth * 0.38, 280), 520),
-      mobileHeight: Math.min(Math.max(window.innerHeight * 0.42, 240), 400)
-    };
-  });
+const PORTRAIT_DEFAULTS: PortraitDimensions = {
+  width: 380,
+  mobileHeight: 320,
+  minMd: false
+};
+
+function usePortraitDimensions() {
+  const [dimensions, setDimensions] = useState<PortraitDimensions>(PORTRAIT_DEFAULTS);
 
   useEffect(() => {
     const update = () => {
-      const minMd = window.matchMedia("(min-width: 768px)").matches;
-      const minLg = window.matchMedia("(min-width: 1024px)").matches;
       setDimensions({
-        minMd,
-        minLg,
+        minMd: window.matchMedia("(min-width: 768px)").matches,
         width: Math.min(Math.max(window.innerWidth * 0.38, 280), 520),
         mobileHeight: Math.min(Math.max(window.innerHeight * 0.42, 240), 400)
       });
@@ -148,17 +145,7 @@ function FormField({
 }
 
 function SubmitRevealButton() {
-  const label = "Send message";
-  const padded = `\u00a0${label}\u00a0`;
-
-  return (
-    <button type="submit" className="nav-reveal-btn nav-reveal-btn--form">
-      <span className="nav-reveal-btn__actual">{padded}</span>
-      <span aria-hidden="true" className="nav-reveal-btn__hover">
-        {padded}
-      </span>
-    </button>
-  );
+  return <RevealButton type="submit" label="Send message" className="nav-reveal-btn--form" />;
 }
 
 function PortraitPanel() {
@@ -243,12 +230,10 @@ function InquiryLaneList({
 
 function InquiryLaneSection({
   inquiry,
-  onSelect,
-  collapsible
+  onSelect
 }: {
   inquiry: InquiryId;
   onSelect: (id: InquiryId) => void;
-  collapsible: boolean;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [lanesOpen, setLanesOpen] = useState(false);
@@ -256,14 +241,57 @@ function InquiryLaneSection({
 
   const handleSelect = (id: InquiryId) => {
     onSelect(id);
-    if (collapsible) {
-      setLanesOpen(false);
-    }
+    setLanesOpen(false);
   };
 
-  if (!collapsible) {
-    return (
-      <div>
+  return (
+    <>
+      <div className="overflow-hidden border border-teal/18 bg-[var(--color-bg-deep)]/40 lg:hidden">
+        <button
+          type="button"
+          className="flex w-full items-start justify-between gap-4 p-4 text-left sm:p-5"
+          aria-expanded={lanesOpen}
+          aria-controls="contact-lane-list"
+          onClick={() => setLanesOpen((prev) => !prev)}
+        >
+          <span className="min-w-0">
+            <span className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
+              What brings you here
+            </span>
+            <span className="mt-2 block font-heading text-[clamp(1.35rem,4vw,1.85rem)] leading-tight text-ink">
+              Choose your lane.
+            </span>
+            {!lanesOpen ? (
+              <span className="mt-2 block font-body text-sm text-teal sm:text-base">{activeLane?.label}</span>
+            ) : null}
+          </span>
+          <span aria-hidden className="mt-1 shrink-0 font-display text-lg leading-none text-teal/80">
+            {lanesOpen ? "−" : "+"}
+          </span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {lanesOpen ? (
+            <motion.div
+              id="contact-lane-list"
+              initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden border-t border-teal/12"
+            >
+              <div className="space-y-2 p-4 pt-3 sm:p-5 sm:pt-4">
+                <p className="pb-1 font-body text-sm leading-relaxed text-ink/65">
+                  Pick the lane that best matches your inquiry.
+                </p>
+                <InquiryLaneList inquiry={inquiry} onSelect={handleSelect} />
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </div>
+
+      <div className="hidden lg:block">
         <p className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
           What brings you here
         </p>
@@ -276,60 +304,10 @@ function InquiryLaneSection({
           not an autoresponder.
         </p>
         <div className="mt-8 sm:mt-10">
-          <InquiryLaneList inquiry={inquiry} onSelect={handleSelect} />
+          <InquiryLaneList inquiry={inquiry} onSelect={onSelect} />
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="overflow-hidden border border-teal/18 bg-[var(--color-bg-deep)]/40">
-      <button
-        type="button"
-        className="flex w-full items-start justify-between gap-4 p-4 text-left sm:p-5"
-        aria-expanded={lanesOpen}
-        aria-controls="contact-lane-list"
-        onClick={() => setLanesOpen((prev) => !prev)}
-      >
-        <span className="min-w-0">
-          <span className="font-display text-[10px] uppercase tracking-[0.28em] text-teal sm:text-[11px] sm:tracking-[0.32em]">
-            What brings you here
-          </span>
-          <span className="mt-2 block font-heading text-[clamp(1.35rem,4vw,1.85rem)] leading-tight text-ink">
-            Choose your lane.
-          </span>
-          {!lanesOpen ? (
-            <span className="mt-2 block font-body text-sm text-teal sm:text-base">{activeLane?.label}</span>
-          ) : null}
-        </span>
-        <span
-          aria-hidden
-          className="mt-1 shrink-0 font-display text-lg leading-none text-teal/80"
-        >
-          {lanesOpen ? "−" : "+"}
-        </span>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {lanesOpen ? (
-          <motion.div
-            id="contact-lane-list"
-            initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-teal/12"
-          >
-            <div className="space-y-2 p-4 pt-3 sm:p-5 sm:pt-4">
-              <p className="pb-1 font-body text-sm leading-relaxed text-ink/65">
-                Pick the lane that best matches your inquiry.
-              </p>
-              <InquiryLaneList inquiry={inquiry} onSelect={handleSelect} />
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </div>
+    </>
   );
 }
 
@@ -370,8 +348,7 @@ function ElsewhereSection() {
 
 export default function ContactPage() {
   const prefersReducedMotion = useReducedMotion();
-  const { width: portraitWidth, mobileHeight: mobilePortraitHeight, minMd, minLg } =
-    usePortraitDimensions();
+  const { width: portraitWidth, mobileHeight: mobilePortraitHeight, minMd } = usePortraitDimensions();
   const [inquiry, setInquiry] = useState<(typeof inquiryTypes)[number]["id"]>("speaking");
   const [formFocused, setFormFocused] = useState(false);
   const [formValues, setFormValues] = useState<FormValues>({
@@ -476,11 +453,7 @@ export default function ContactPage() {
                 variants={staggerContainer}
               >
                 <motion.div variants={fadeUpVariant} className="lg:col-span-5 lg:row-start-1 xl:col-span-4">
-                  <InquiryLaneSection
-                    inquiry={inquiry}
-                    onSelect={setInquiry}
-                    collapsible={!minLg}
-                  />
+                  <InquiryLaneSection inquiry={inquiry} onSelect={setInquiry} />
                 </motion.div>
 
                 <motion.div

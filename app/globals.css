@@ -432,7 +432,8 @@ body::after {
 }
 
 .nav-reveal-btn:hover .nav-reveal-btn__hover,
-.nav-reveal-btn:focus-visible .nav-reveal-btn__hover {
+.nav-reveal-btn:focus-visible .nav-reveal-btn__hover,
+.nav-reveal-btn--lit .nav-reveal-btn__hover {
   width: 100%;
   filter: drop-shadow(0 0 12px var(--nav-reveal-fill));
 }
@@ -458,6 +459,7 @@ body::after {
   font-size: 0.8125rem;
   letter-spacing: 0.14em;
   flex-shrink: 0;
+  align-self: flex-start;
 }
 
 @media (min-width: 640px) {
@@ -469,13 +471,7 @@ body::after {
   .nav-reveal-btn--form {
     font-size: 0.875rem;
     letter-spacing: 0.16em;
-  }
-}
-
-@media (hover: none) {
-  .nav-reveal-btn:active .nav-reveal-btn__hover {
-    width: 100%;
-    filter: drop-shadow(0 0 12px var(--nav-reveal-fill));
+    align-self: auto;
   }
 }
 
@@ -484,7 +480,8 @@ body::after {
     transition: none;
   }
 
-  .nav-reveal-btn:focus-visible .nav-reveal-btn__hover {
+  .nav-reveal-btn:focus-visible .nav-reveal-btn__hover,
+  .nav-reveal-btn--lit .nav-reveal-btn__hover {
     width: 100%;
   }
 }
