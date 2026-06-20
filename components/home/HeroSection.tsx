@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { homeContent } from "@/app/data/siteContent";
+import HeroLightButton from "@/components/home/HeroLightButton";
+import HeroPatternOverlay from "@/components/home/HeroPatternOverlay";
 import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 
 const HERO_BLUR =
@@ -20,10 +21,6 @@ export default function HeroSection() {
   const prefersReducedMotion = useReducedMotion();
   const [headlineIndex, setHeadlineIndex] = useState(0);
   const [transitionVariant, setTransitionVariant] = useState(0);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 260, damping: 18, mass: 0.45 });
-  const sy = useSpring(my, { stiffness: 260, damping: 18, mass: 0.45 });
 
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -74,24 +71,6 @@ export default function HeroSection() {
     } as const;
   }, [prefersReducedMotion, transitionVariant]);
 
-  const ctaHandlers = useMemo(
-    () => ({
-      onMouseMove: (event: React.MouseEvent<HTMLDivElement>) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const localX = event.clientX - rect.left - rect.width / 2;
-        const localY = event.clientY - rect.top - rect.height / 2;
-        const radius = 32;
-        mx.set(Math.max(-radius, Math.min(radius, localX * 0.22)));
-        my.set(Math.max(-radius, Math.min(radius, localY * 0.22)));
-      },
-      onMouseLeave: () => {
-        mx.set(0);
-        my.set(0);
-      }
-    }),
-    [mx, my]
-  );
-
   return (
     <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden sm:min-h-[620px] md:min-h-[680px]">
       <motion.div
@@ -113,10 +92,11 @@ export default function HeroSection() {
           className="object-cover object-top"
         />
       </motion.div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.28),rgba(14,19,24,0.82)_72%,var(--color-bg-deep))]" />
+      <HeroPatternOverlay />
+      <div className="absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(14,19,24,0.22),rgba(14,19,24,0.78)_72%,var(--color-bg-deep))]" />
 
       <motion.div
-        className="pointer-events-none absolute -left-28 -top-28 h-[480px] w-[480px] rounded-full blur-2xl"
+        className="pointer-events-none absolute -left-28 -top-28 z-[2] h-[480px] w-[480px] rounded-full blur-2xl"
         style={{
           background: "radial-gradient(circle, rgba(45,191,177,0.38), transparent 68%)"
         }}
@@ -124,7 +104,7 @@ export default function HeroSection() {
         transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="pointer-events-none absolute -bottom-24 -right-20 h-[440px] w-[440px] rounded-full blur-2xl"
+        className="pointer-events-none absolute -bottom-24 -right-20 z-[2] h-[440px] w-[440px] rounded-full blur-2xl"
         style={{
           background: "radial-gradient(circle, rgba(217,101,74,0.34), transparent 72%)"
         }}
@@ -180,23 +160,8 @@ export default function HeroSection() {
             {homeContent.subtitle}
           </motion.p>
 
-          <motion.div variants={fadeUpVariant} className="mt-10 flex justify-center">
-            <motion.div
-              style={{ x: sx, y: sy }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 320, damping: 20 }}
-              className="cta-clay-wrap"
-              onMouseMove={ctaHandlers.onMouseMove}
-              onMouseLeave={ctaHandlers.onMouseLeave}
-            >
-              <Link
-                href={homeContent.cta.href}
-                className="cta-clay-inner inline-flex rounded-full px-9 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.16em] text-ink sm:px-11 sm:py-4"
-              >
-                {homeContent.cta.label}
-              </Link>
-            </motion.div>
+          <motion.div variants={fadeUpVariant} className="mt-10 flex justify-center sm:mt-11">
+            <HeroLightButton href={homeContent.cta.href} label={homeContent.cta.label} />
           </motion.div>
         </motion.div>
       </div>

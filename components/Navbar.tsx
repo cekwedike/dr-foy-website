@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import BrandWordmark from "@/components/BrandWordmark";
+import NavRevealButton from "@/components/NavRevealButton";
 
 const PALETTE = {
   background: "#0E1318",
@@ -84,16 +85,16 @@ export default function Navbar() {
       }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
-      <div className="mx-auto flex w-full items-center justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4 2xl:px-12 2xl:py-6">
+      <div className="mx-auto flex w-full items-center justify-between gap-2 px-4 py-3 sm:px-5 sm:py-4 lg:px-8 lg:py-4 xl:px-10 xl:py-5">
         <Link
           href="/"
           aria-label="Dr Tochukwu MacFoy home"
-          className="min-w-0 max-w-[min(48vw,11rem)] shrink sm:max-w-[min(40vw,13rem)] 2xl:max-w-[18rem]"
+          className="min-w-0 max-w-[min(48vw,11rem)] shrink sm:max-w-[min(40vw,13rem)] lg:max-w-[15rem] xl:max-w-[18rem]"
         >
           <BrandWordmark className="block leading-none text-[clamp(0.68rem,2vw,1.2rem)] text-coral" />
         </Link>
 
-        <div className="hidden min-w-0 flex-1 items-center justify-end gap-4 2xl:flex 2xl:gap-6">
+        <div className="hidden min-w-0 flex-1 items-center justify-end gap-3 lg:flex lg:gap-4 xl:gap-6">
           {navLinks.slice(0, 2).map((item) => (
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
@@ -107,14 +108,14 @@ export default function Navbar() {
               type="button"
               aria-expanded={desktopWorkOpen}
               aria-label="Open Energize Central menu"
-              className="shrink-0 whitespace-nowrap text-xs uppercase tracking-[0.12em] 2xl:text-sm 2xl:tracking-[0.18em]"
+              className="shrink-0 whitespace-nowrap text-xs uppercase tracking-[0.12em] xl:text-sm xl:tracking-[0.18em]"
               style={{
                 color: PALETTE.ink,
                 fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
               }}
             >
-              <span className="2xl:hidden">ENERGIZE ▾</span>
-              <span className="hidden 2xl:inline">ENERGIZE CENTRAL ▾</span>
+              <span className="xl:hidden">ENERGIZE ▾</span>
+              <span className="hidden xl:inline">ENERGIZE CENTRAL ▾</span>
             </button>
 
             <AnimatePresence>
@@ -157,23 +158,14 @@ export default function Navbar() {
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
 
-          <Link
-            href="/contact"
-            className="inline-flex shrink-0 whitespace-nowrap border border-ink/30 px-4 py-2 text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:border-teal hover:text-teal 2xl:px-5 2xl:py-2.5 2xl:text-sm 2xl:tracking-[0.16em]"
-            style={{
-              color: PALETTE.ink,
-              fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-            }}
-          >
-            <span className="2xl:hidden">Book</span>
-            <span className="hidden 2xl:inline">Book Dr. Foy</span>
-          </Link>
+          <NavRevealButton href="/contact" label="Book" className="shrink-0 xl:hidden" />
+          <NavRevealButton href="/contact" label="Book Dr. Foy" className="hidden shrink-0 xl:inline-block" />
         </div>
 
         <button
           type="button"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          className="shrink-0 2xl:hidden"
+          className="shrink-0 lg:hidden"
           style={{ color: PALETTE.ink }}
           onClick={() => setMobileMenuOpen(true)}
         >
@@ -188,7 +180,7 @@ export default function Navbar() {
               key="mobile-menu-backdrop"
               type="button"
               aria-label="Close mobile menu"
-              className="fixed inset-0 z-[55] bg-[rgba(14,19,24,0.55)] backdrop-blur-[2px] 2xl:hidden"
+              className="fixed inset-0 z-[55] bg-[rgba(14,19,24,0.55)] backdrop-blur-[2px] lg:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -198,7 +190,7 @@ export default function Navbar() {
 
             <motion.aside
               key="mobile-menu-drawer"
-              className="fixed inset-y-0 right-0 z-[60] flex w-1/2 min-w-[17.5rem] max-w-[22rem] flex-col border-l border-teal/20 bg-[rgba(14,19,24,0.88)] shadow-[-12px_0_40px_rgba(0,0,0,0.35)] backdrop-blur-md 2xl:hidden sm:max-w-none"
+              className="fixed inset-y-0 right-0 z-[60] flex w-1/2 min-w-[17.5rem] max-w-[22rem] flex-col border-l border-teal/20 bg-[rgba(14,19,24,0.88)] shadow-[-12px_0_40px_rgba(0,0,0,0.35)] backdrop-blur-md lg:hidden sm:max-w-none"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -292,16 +284,12 @@ export default function Navbar() {
                   </motion.div>
 
                   <motion.div variants={mobileItem} className="pt-3 sm:pt-4">
-                    <Link
+                    <NavRevealButton
                       href="/contact"
+                      label="Book Dr. Foy"
+                      className="nav-reveal-btn--drawer"
                       onClick={closeMobileMenu}
-                      className="inline-flex border border-ink/30 px-5 py-2 text-xs uppercase tracking-[0.14em] text-ink transition-colors hover:border-teal hover:text-teal sm:px-6 sm:py-2.5 sm:text-sm sm:tracking-[0.16em]"
-                      style={{
-                        fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"
-                      }}
-                    >
-                      Book Dr. Foy
-                    </Link>
+                    />
                   </motion.div>
                 </motion.div>
               </div>
@@ -322,7 +310,7 @@ function DesktopLink({ href, label }: LinkProps) {
   return (
     <Link
       href={href}
-      className="shrink-0 whitespace-nowrap text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:text-teal 2xl:text-sm 2xl:tracking-[0.18em]"
+      className="shrink-0 whitespace-nowrap text-xs uppercase tracking-[0.12em] transition-colors duration-200 hover:text-teal xl:text-sm xl:tracking-[0.18em]"
       style={{
         color: PALETTE.ink,
         fontFamily: "var(--font-space), 'Space Grotesk', sans-serif"

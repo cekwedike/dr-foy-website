@@ -4,6 +4,7 @@ export default function EnergizeFestPage() {
   return (
     <WorkPageLayout
       heroImage="/images/foy-1.jpg"
+      heroImageClassName="object-cover object-[50%_12%] md:object-[50%_8%]"
       title="Energize Fest"
       subtitle="Lagos's biggest faith-centered December event. Built for families. Built to scale."
       body={

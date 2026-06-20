@@ -20,6 +20,25 @@ const SLIDE_COUNT = 1 + workSlides.length;
 
 const MOBILE_BREAKPOINT = 768;
 
+const DEFAULT_WORK_SLIDE_IMAGE_CLASS = {
+  mobile: "object-cover object-top",
+  desktop: "object-cover object-top md:object-[center_30%]"
+} as const;
+
+/** Slide 03/04 — keep head in frame (foy-1.jpg) */
+const WORK_SLIDE_IMAGE_CLASS: Partial<
+  Record<(typeof workSlides)[number]["slug"], { mobile: string; desktop: string }>
+> = {
+  "energize-fest": {
+    mobile: "object-cover object-[50%_15%]",
+    desktop: "object-cover object-[50%_12%] md:object-[50%_8%]"
+  }
+};
+
+function getWorkSlideImageClass(slug: (typeof workSlides)[number]["slug"], variant: "mobile" | "desktop") {
+  return WORK_SLIDE_IMAGE_CLASS[slug]?.[variant] ?? DEFAULT_WORK_SLIDE_IMAGE_CLASS[variant];
+}
+
 const SLIDE_BLUR =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cdefs%3E%3CradialGradient id='g' cx='70%25' cy='40%25' r='90%25'%3E%3Cstop offset='0%25' stop-color='%232a3542' stop-opacity='0.55'/%3E%3Cstop offset='55%25' stop-color='%230e1318' stop-opacity='0.92'/%3E%3Cstop offset='100%25' stop-color='%230e1318'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='24' height='16' fill='url(%23g)'/%3E%3C/svg%3E";
 
@@ -240,7 +259,7 @@ function MobileHorizontalCarousel() {
             layout="fluid"
             image={item.image}
             imageAlt={item.title}
-            imageClassName="object-cover object-top"
+            imageClassName={getWorkSlideImageClass(item.slug, "mobile")}
             blurDataURL={SLIDE_BLUR}
           >
             <WorkSlideContent index={index + 1} title={item.title} subtitle={item.subtitle} slug={item.slug} />
@@ -342,7 +361,7 @@ function DesktopHorizontalScroll() {
               slideWidth={slideWidth}
               image={item.image}
               imageAlt={item.title}
-              imageClassName="object-cover object-top md:object-[center_30%]"
+              imageClassName={getWorkSlideImageClass(item.slug, "desktop")}
               blurDataURL={SLIDE_BLUR}
             >
               <WorkSlideContent index={index + 1} title={item.title} subtitle={item.subtitle} slug={item.slug} />
@@ -391,7 +410,7 @@ function ReducedMotionLayout() {
                   alt={item.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-top"
+                  className={getWorkSlideImageClass(item.slug, "desktop")}
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,19,24,0.55),transparent_60%)]" />
               </div>

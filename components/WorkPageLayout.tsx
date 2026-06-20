@@ -14,6 +14,7 @@ type WorkPageLayoutProps = {
   body: ReactNode;
   accentColor?: string;
   heroTitle?: ReactNode;
+  heroImageClassName?: string;
 };
 
 export default function WorkPageLayout({
@@ -22,7 +23,8 @@ export default function WorkPageLayout({
   heroImage,
   body,
   accentColor = "#D9654A",
-  heroTitle
+  heroTitle,
+  heroImageClassName = "object-cover object-top md:object-[center_30%]"
 }: WorkPageLayoutProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -53,7 +55,7 @@ export default function WorkPageLayout({
             fill
             priority
             sizes="100vw"
-            className="object-cover object-top md:object-[center_30%]"
+            className={heroImageClassName}
           />
         </motion.div>
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(14,19,24,0.38),rgba(14,19,24,0.9))]" />

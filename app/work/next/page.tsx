@@ -10,6 +10,7 @@ export default function NextPage() {
   return (
     <WorkPageLayout
       heroImage="/images/foy-the-energetic.jpg"
+      heroImageClassName="object-cover object-[50%_12%] md:object-[50%_8%]"
       title="NEXT"
       subtitle="New Era Xceptional Talent"
       heroTitle={
