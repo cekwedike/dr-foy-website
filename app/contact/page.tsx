@@ -326,6 +326,189 @@ function InquiryLaneSection({
   );
 }
 
+function SuccessCheck({ prefersReducedMotion }: { prefersReducedMotion: boolean | null }) {
+  return (
+    <span className="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal/40 sm:h-12 sm:w-12">
+      <span aria-hidden className="absolute inset-0 rounded-full bg-teal/10" />
+      <motion.svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="relative h-5 w-5 sm:h-6 sm:w-6"
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.path
+          d="M5 12.5 L10 17.5 L19 7"
+          stroke="#2dbfb1"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          variants={{
+            hidden: { pathLength: 0, opacity: 0 },
+            visible: {
+              pathLength: 1,
+              opacity: 1,
+              transition: {
+                pathLength: {
+                  duration: prefersReducedMotion ? 0 : 0.6,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0.25
+                },
+                opacity: { duration: 0.01, delay: 0.25 }
+              }
+            }
+          }}
+        />
+      </motion.svg>
+    </span>
+  );
+}
+
+function SubmissionSuccess({
+  name,
+  inquiryLabel,
+  onReset,
+  prefersReducedMotion
+}: {
+  name: string;
+  inquiryLabel: string;
+  onReset: () => void;
+  prefersReducedMotion: boolean | null;
+}) {
+  const firstName = name.trim().split(/\s+/)[0] || "there";
+
+  const steps = [
+    {
+      label: "Landed, not queued",
+      detail: "Your note is already in his inbox — no bot, no holding pattern."
+    },
+    {
+      label: "Read personally",
+      detail: "Every message is read by a human. Yours won't be the exception."
+    },
+    {
+      label: "A considered reply",
+      detail: "Expect a thoughtful response, usually within two to three days."
+    }
+  ] as const;
+
+  return (
+    <motion.section
+      initial={prefersReducedMotion ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex min-h-[calc(100dvh-5rem)] items-center overflow-hidden border-b border-teal/15 bg-background"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(45,191,177,0.1),transparent_60%)]"
+      />
+      <HeroPatternOverlay />
+
+      <div className="page-container relative z-10 w-full py-16 sm:py-20 md:py-24">
+        <motion.div
+          className="mx-auto max-w-3xl"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeUpVariant} className="flex items-center gap-4">
+            <SuccessCheck prefersReducedMotion={prefersReducedMotion} />
+            <p className="font-display text-[10px] uppercase tracking-[0.32em] text-teal sm:text-xs sm:tracking-[0.38em]">
+              Message received
+            </p>
+          </motion.div>
+
+          <motion.h1
+            variants={fadeUpVariant}
+            className="mt-8 font-heading text-[clamp(2.25rem,6vw,4.25rem)] leading-[0.95] text-ink"
+          >
+            Thank you, <span className="accent-gradient-text">{firstName}.</span>
+          </motion.h1>
+
+          <motion.p
+            variants={fadeUpVariant}
+            className="mt-6 max-w-xl font-body text-base leading-relaxed text-ink/70 sm:text-lg"
+          >
+            Your{" "}
+            {inquiryLabel ? (
+              <span className="text-teal">{inquiryLabel.toLowerCase()}</span>
+            ) : null}{" "}
+            note is on its way. This isn&apos;t an autoresponder — it&apos;s a promise that a real
+            person will read what you wrote and reply with intention.
+          </motion.p>
+
+          <motion.ol variants={fadeUpVariant} className="mt-12 border-t border-teal/15">
+            {steps.map((step, index) => (
+              <li
+                key={step.label}
+                className="grid grid-cols-[2.5rem_1fr] items-start gap-x-4 border-b border-teal/12 py-5 sm:grid-cols-[3rem_1fr] sm:py-6"
+              >
+                <span className="font-display text-xs uppercase tracking-[0.2em] text-teal/70">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-heading text-lg text-ink sm:text-xl">{step.label}</span>
+                  <span className="mt-1 block font-body text-sm leading-relaxed text-ink/60 sm:text-base">
+                    {step.detail}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </motion.ol>
+
+          <motion.div
+            variants={fadeUpVariant}
+            className="mt-12 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <RevealButton
+                label="Send another message"
+                className="nav-reveal-btn--form"
+                onClick={onReset}
+              />
+              <Link
+                href="/"
+                className="group inline-flex items-center gap-2 font-display text-[11px] uppercase tracking-[0.24em] text-ink/55 transition-colors hover:text-teal"
+              >
+                <span
+                  aria-hidden
+                  className="transition-transform duration-200 group-hover:-translate-x-0.5"
+                >
+                  ←
+                </span>
+                Back to home
+              </Link>
+            </div>
+
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {socialLinks.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-baseline gap-1.5 font-body text-sm text-ink/70 transition-colors hover:text-teal"
+                  >
+                    {item.handle}
+                    <span
+                      aria-hidden
+                      className="text-teal/70 transition-transform duration-200 group-hover:translate-x-0.5"
+                    >
+                      ↗
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+}
+
 function ElsewhereSection() {
   return (
     <div className="border-t border-teal/15 pt-8 lg:border-t-0 lg:pt-0">
@@ -373,6 +556,10 @@ export default function ContactPage() {
   });
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submittedSummary, setSubmittedSummary] = useState<{
+    name: string;
+    inquiryLabel: string;
+  } | null>(null);
 
   const portraitCollapsed = useMemo(
     () =>
@@ -440,8 +627,10 @@ export default function ContactPage() {
           throw new Error(data?.error || "Something went wrong. Please try again.");
         }
 
+        setSubmittedSummary({ name: formValues.name.trim(), inquiryLabel });
         setStatus("success");
         setFormValues({ name: "", email: "", message: "" });
+        setFormFocused(false);
       } catch (error) {
         setStatus("error");
         setErrorMessage(
@@ -454,8 +643,32 @@ export default function ContactPage() {
     [status, inquiry, formValues]
   );
 
+  const handleReset = useCallback(() => {
+    setStatus("idle");
+    setErrorMessage(null);
+    setSubmittedSummary(null);
+    setFormFocused(false);
+  }, []);
+
   return (
     <main className="overflow-x-clip bg-[var(--color-bg-deep)] pt-20">
+      <AnimatePresence mode="wait">
+        {status === "success" && submittedSummary ? (
+          <SubmissionSuccess
+            key="contact-success"
+            name={submittedSummary.name}
+            inquiryLabel={submittedSummary.inquiryLabel}
+            onReset={handleReset}
+            prefersReducedMotion={prefersReducedMotion}
+          />
+        ) : (
+          <motion.div
+            key="contact-form"
+            initial={prefersReducedMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
       <section className="relative border-b border-teal/15 bg-background">
         <div
           aria-hidden
@@ -585,11 +798,6 @@ export default function ContactPage() {
                       </div>
 
                       <div aria-live="polite" role="status">
-                        {status === "success" ? (
-                          <p className="font-body text-sm text-teal sm:text-base">
-                            Thank you — your message is on its way. Expect a thoughtful reply soon.
-                          </p>
-                        ) : null}
                         {status === "error" ? (
                           <p className="font-body text-sm text-red-400 sm:text-base">
                             {errorMessage}
@@ -629,6 +837,9 @@ export default function ContactPage() {
           </motion.div>
         </div>
       </section>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
