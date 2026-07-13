@@ -11,6 +11,10 @@ import { fadeUpVariant, staggerContainer } from "@/components/motion/tokens";
 const SLIDE_EASE = [0.32, 0.72, 0, 1] as const;
 const SLIDE_DURATION = 0.72;
 
+const CONTACT_API_URL =
+  process.env.NEXT_PUBLIC_CONTACT_API_URL ??
+  "https://dr-foy-contact-api.vercel.app/api/contact";
+
 type PortraitDimensions = {
   width: number;
   mobileHeight: number;
@@ -85,6 +89,8 @@ type FormValues = {
   message: string;
 };
 
+type SubmitStatus = "idle" | "submitting" | "success" | "error";
+
 function FormField({
   id,
   label,
@@ -144,8 +150,17 @@ function FormField({
   );
 }
 
-function SubmitRevealButton() {
-  return <RevealButton type="submit" label="Send message" className="nav-reveal-btn--form" />;
+function SubmitRevealButton({ status }: { status: SubmitStatus }) {
+  const label = status === "submitting" ? "Sending…" : "Send message";
+  return (
+    <RevealButton
+      type="submit"
+      label={label}
+      className="nav-reveal-btn--form"
+      disabled={status === "submitting"}
+      aria-busy={status === "submitting"}
+    />
+  );
 }
 
 function PortraitPanel() {
@@ -356,6 +371,8 @@ export default function ContactPage() {
     email: "",
     message: ""
   });
+  const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const portraitCollapsed = useMemo(
     () =>
@@ -393,6 +410,49 @@ export default function ContactPage() {
   const updateField = useCallback((field: keyof FormValues, value: string) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   }, []);
+
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (status === "submitting") return;
+
+      setStatus("submitting");
+      setErrorMessage(null);
+
+      const inquiryLabel =
+        inquiryTypes.find((item) => item.id === inquiry)?.label ?? "General Inquiry";
+
+      try {
+        const response = await fetch(CONTACT_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formValues.name.trim(),
+            email: formValues.email.trim(),
+            message: formValues.message.trim(),
+            inquiryType: inquiryLabel
+          })
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok || !data?.success) {
+          throw new Error(data?.error || "Something went wrong. Please try again.");
+        }
+
+        setStatus("success");
+        setFormValues({ name: "", email: "", message: "" });
+      } catch (error) {
+        setStatus("error");
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Something went wrong. Please try again."
+        );
+      }
+    },
+    [status, inquiry, formValues]
+  );
 
   return (
     <main className="overflow-x-clip bg-[var(--color-bg-deep)] pt-20">
@@ -482,9 +542,7 @@ export default function ContactPage() {
                     <form
                       id="contact-form"
                       className="mt-8 space-y-7 sm:mt-10 sm:space-y-8"
-                      onSubmit={(event) => {
-                        event.preventDefault();
-                      }}
+                      onSubmit={handleSubmit}
                     >
                       <input type="hidden" name="inquiry" value={inquiry} />
 
@@ -523,7 +581,20 @@ export default function ContactPage() {
                           By submitting, you agree to be contacted about your inquiry. No mailing lists,
                           no noise.
                         </p>
-                        <SubmitRevealButton />
+                        <SubmitRevealButton status={status} />
+                      </div>
+
+                      <div aria-live="polite" role="status">
+                        {status === "success" ? (
+                          <p className="font-body text-sm text-teal sm:text-base">
+                            Thank you — your message is on its way. Expect a thoughtful reply soon.
+                          </p>
+                        ) : null}
+                        {status === "error" ? (
+                          <p className="font-body text-sm text-red-400 sm:text-base">
+                            {errorMessage}
+                          </p>
+                        ) : null}
                       </div>
                     </form>
                   </div>
