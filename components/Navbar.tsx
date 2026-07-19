@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import BrandWordmark from "@/components/BrandWordmark";
-import NavRevealButton from "@/components/NavRevealButton";
 
 const PALETTE = {
   background: "#0E1318",
@@ -157,8 +156,6 @@ export default function Navbar() {
           {navLinks.slice(2).map((item) => (
             <DesktopLink key={item.href} href={item.href} label={item.label} />
           ))}
-
-          <NavRevealButton href="/contact" label="Book Dr. Foy" className="nav-reveal-btn--nav shrink-0" />
         </div>
 
         <button
@@ -280,15 +277,6 @@ export default function Navbar() {
                   </motion.div>
                   <motion.div variants={mobileItem}>
                     <MobileLink href="/contact" label="CONTACT" onNavigate={closeMobileMenu} />
-                  </motion.div>
-
-                  <motion.div variants={mobileItem} className="pt-3 sm:pt-4">
-                    <NavRevealButton
-                      href="/contact"
-                      label="Book Dr. Foy"
-                      className="nav-reveal-btn--drawer"
-                      onClick={closeMobileMenu}
-                    />
                   </motion.div>
                 </motion.div>
               </div>
