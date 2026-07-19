@@ -109,12 +109,6 @@ export default function Footer() {
                     );
                   })}
                 </div>
-                <Link
-                  href="/contact"
-                  className="mt-1 inline-flex font-body text-[0.82rem] text-ink/72 underline decoration-teal/30 underline-offset-[3px] transition-colors hover:text-teal sm:text-sm"
-                >
-                  Contact
-                </Link>
               </FooterLinkColumn>
             </motion.div>
           </div>
